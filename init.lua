@@ -235,12 +235,12 @@ require('lazy').setup({
     cond = not not vim.g.vscode,
     opts = {},
   },
-  {
+  --[[ {
     'APZelos/blamer.nvim',
     config = function()
       vim.api.nvim_set_keymap('n', '<leader>bt', '<cmd>BlamerToggle<cr>', {})
     end,
-  },
+  }, ]]
   {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -254,7 +254,7 @@ require('lazy').setup({
     -- use opts = {} for passing setup options
     -- this is equalent to setup({}) function
   },
-  {
+  --[[ {
     'jose-elias-alvarez/null-ls.nvim',
     config = function()
       local group = vim.api.nvim_create_augroup('lsp_format_on_save', { clear = false })
@@ -287,8 +287,8 @@ require('lazy').setup({
         end,
       }
     end,
-  },
-  {
+  }, ]]
+  --[[ {
     'MunifTanjim/prettier.nvim',
     dependencies = {
       'jose-elias-alvarez/null-ls.nvim',
@@ -333,8 +333,8 @@ require('lazy').setup({
         }
       end,
     },
-  },
-  {
+  } ]]
+  --[[ {
     'nvim-tree/nvim-tree.lua',
     version = '*',
     lazy = false,
@@ -345,8 +345,8 @@ require('lazy').setup({
       require('nvim-tree').setup {}
       vim.keymap.set({ 'n', 'v' }, '<leader>n', '<cmd>NvimTreeToggle<CR>')
     end,
-  },
-  { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
+  } ]]
+  -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -534,7 +534,7 @@ require('lazy').setup({
     end,
   },
 
-  { -- LSP Configuration & Plugins
+  --[[ { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -801,7 +801,7 @@ require('lazy').setup({
         },
       }
     end,
-  },
+  }, ]]
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -815,7 +815,7 @@ require('lazy').setup({
       }
     end,
   },
-  { -- Autoformat
+  --[[ { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
     keys = {
@@ -853,9 +853,9 @@ require('lazy').setup({
         vue = { { 'prettierd', 'prettier' } },
       },
     },
-  },
+  }, ]]
 
-  { -- Autocompletion
+  --[[ { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -964,7 +964,7 @@ require('lazy').setup({
         },
       }
     end,
-  },
+  }, ]]
 
   --[[ { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
@@ -1119,7 +1119,7 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
+  -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
@@ -1161,18 +1161,18 @@ require('lazy').setup({
 -- self custom
 
 vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>vsp<CR>')
-vim.keymap.set({ 'n' }, '<Tab>', '<cmd>bn<CR>')
+-- vim.keymap.set({ 'n' }, '<Tab>', '<cmd>bn<CR>')
 vim.api.nvim_create_user_command('Cloa', function()
   vim.cmd '%bd|edit#| bd#'
 end, {})
 
 vim.opt.termguicolors = true
-require('bufferline').setup {
+--[[ require('bufferline').setup {
 
   options = {
     show_tab_indicators = true,
   },
-}
+} ]]
 -- 設置 tab 寬度為 4 個空格
 vim.o.tabstop = 4
 -- 設置縮進為 4 個空格
