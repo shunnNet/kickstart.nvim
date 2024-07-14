@@ -159,8 +159,6 @@ vim.opt.scrolloff = 10
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
-vim.opt.cursorcolumn = true
-
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
@@ -191,7 +189,6 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-vim.keymap.set('i', '<C-b>', '<Backspace>', { desc = 'Move focus to the upper window' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -228,126 +225,10 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-  -- { 'akinsho/toggleterm.nvim', version = '*', config = true },
-  {
-    'vscode-neovim/vscode-multi-cursor.nvim',
-    event = 'VeryLazy',
 
-    cond = not not vim.g.vscode,
-    opts = {},
-  },
-  --[[ {
-    'APZelos/blamer.nvim',
-    config = function()
-      vim.api.nvim_set_keymap('n', '<leader>bt', '<cmd>BlamerToggle<cr>', {})
-    end,
-  }, ]]
-  {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      require('colorizer').setup {}
-    end,
-  },
-  {
-    'windwp/nvim-autopairs',
-    event = 'InsertEnter',
-    config = true,
-    -- use opts = {} for passing setup options
-    -- this is equalent to setup({}) function
-  },
-  --[[ {
-    'jose-elias-alvarez/null-ls.nvim',
-    config = function()
-      local group = vim.api.nvim_create_augroup('lsp_format_on_save', { clear = false })
-      local event = 'BufWritePre' -- or "BufWritePost"
-      local async = event == 'BufWritePost'
-      require('null-ls').setup {
-        on_attach = function(client, bufnr)
-          if client.supports_method 'textDocument/formatting' then
-            vim.keymap.set('n', '<Leader>f', function()
-              vim.lsp.buf.format { bufnr = vim.api.nvim_get_current_buf() }
-            end, { buffer = bufnr, desc = '[lsp] format' })
+  -- using lazy.nvim
+  { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
 
-            -- format on save
-            vim.api.nvim_clear_autocmds { buffer = bufnr, group = group }
-            vim.api.nvim_create_autocmd(event, {
-              buffer = bufnr,
-              group = group,
-              callback = function()
-                vim.lsp.buf.format { bufnr = bufnr, async = async }
-              end,
-              desc = '[lsp] format on save',
-            })
-          end
-
-          if client.supports_method 'textDocument/rangeFormatting' then
-            vim.keymap.set('x', '<Leader>f', function()
-              vim.lsp.buf.format { bufnr = vim.api.nvim_get_current_buf() }
-            end, { buffer = bufnr, desc = '[lsp] format' })
-          end
-        end,
-      }
-    end,
-  }, ]]
-  --[[ {
-    'MunifTanjim/prettier.nvim',
-    dependencies = {
-      'jose-elias-alvarez/null-ls.nvim',
-      config = function()
-        require('prettier').setup {
-          bin = 'prettier', -- or `'prettierd'` (v0.23.3+)
-          filetypes = {
-            'css',
-            'graphql',
-            'html',
-            'javascript',
-            'javascriptreact',
-            'json',
-            'less',
-            'markdown',
-            'scss',
-            'typescript',
-            'typescriptreact',
-            'yaml',
-            'vue',
-          },
-          cli_options = {
-            arrow_parens = 'always',
-            bracket_spacing = true,
-            bracket_same_line = false,
-            embedded_language_formatting = 'auto',
-            end_of_line = 'lf',
-            html_whitespace_sensitivity = 'css',
-            -- jsx_bracket_same_line = false,
-            jsx_single_quote = false,
-            print_width = 80,
-            prose_wrap = 'preserve',
-            quote_props = 'as-needed',
-            semi = true,
-            single_attribute_per_line = false,
-            single_quote = false,
-            tab_width = 2,
-            trailing_comma = 'es5',
-            use_tabs = false,
-            -- vue_indent_script_and_style = false,
-          },
-        }
-      end,
-    },
-  } ]]
-  --[[ {
-    'nvim-tree/nvim-tree.lua',
-    version = '*',
-    lazy = false,
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = function()
-      require('nvim-tree').setup {}
-      vim.keymap.set({ 'n', 'v' }, '<leader>n', '<cmd>NvimTreeToggle<CR>')
-    end,
-  } ]]
-  -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -362,16 +243,6 @@ require('lazy').setup({
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
-  {
-    "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
-    event = "VeryLazy",
-    config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
-    end
-  },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -491,11 +362,7 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        pickers = {
-          find_files = {
-            hidden = true,
-          },
-        },
+        -- pickers = {}
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -545,7 +412,7 @@ require('lazy').setup({
     end,
   },
 
-  --[[ { -- LSP Configuration & Plugins
+  { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -691,7 +558,6 @@ require('lazy').setup({
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -702,9 +568,6 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local mason_registry = require 'mason-registry'
-      local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
-
       local servers = {
         -- clangd = {},
         -- gopls = {},
@@ -716,57 +579,9 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {
-          init_options = {
-            plugins = {
-              {
-                name = '@vue/typescript-plugin',
-                location = vue_language_server_path,
-                languages = { 'vue' },
-              },
-            },
-          },
-          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-        },
+        -- tsserver = {},
         --
-        html = {
-          cmd = { 'vscode-html-language-server', '--stdio' },
-          filetypes = { 'html', 'templ' },
-          init_options = {
-            configurationSection = {
-              'html',
-              'css',
-              'javascript',
-            },
-            embeddedLanguages = {
-              css = true,
-              javascript = true,
-            },
-            provideFormatter = true,
-          },
-          settings = {},
-          single_file_support = true,
-        },
-        emmet_ls = {
-          filetypes = { 'css', 'eruby', 'html', 'javascriptreact', 'less', 'sass', 'scss', 'svelte', 'pug', 'typescriptreact', 'vue' },
-          init_options = {
-            html = {
-              options = {
-                -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
-                ['bem.enabled'] = true,
-              },
-            },
-          },
-        },
-        cssls = {
-          filetypes = { 'css', 'scss', 'less', 'vue', 'html' },
-          settings = {
-            css = { validate = true },
-            scss = { validate = true },
-            less = { validate = true },
-          },
-        },
-        volar = {},
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -812,21 +627,9 @@ require('lazy').setup({
         },
       }
     end,
-  }, ]]
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup {
-        options = {
-          disabled_filetypes = {
-            'NvimTree',
-          },
-        },
-      }
-    end,
   },
-  --[[ { -- Autoformat
+
+  { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
     keys = {
@@ -858,15 +661,12 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        javascript = { { 'prettierd', 'prettier' } },
-        html = { { 'prettierd', 'prettier' } },
-        css = { { 'prettierd', 'prettier' } },
-        vue = { { 'prettierd', 'prettier' } },
+        -- javascript = { { "prettierd", "prettier" } },
       },
     },
-  }, ]]
+  },
 
-  --[[ { -- Autocompletion
+  { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -922,9 +722,9 @@ require('lazy').setup({
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
-          -- ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-n>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
-          -- ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -933,13 +733,13 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          -- ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<C-y>'] = cmp.mapping.confirm { select = true },
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
-          ['<CR>'] = cmp.mapping.confirm { select = true },
-          -- ['<Tab>'] = cmp.mapping.select_next_item(),
-          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          --['<CR>'] = cmp.mapping.confirm { select = true },
+          --['<Tab>'] = cmp.mapping.select_next_item(),
+          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -954,16 +754,16 @@ require('lazy').setup({
           --
           -- <c-l> will move you to the right of each of the expansion locations.
           -- <c-h> is similar, except moving you backwards.
-          -- ['<C-l>'] = cmp.mapping(function()
-          --   if luasnip.expand_or_locally_jumpable() then
-          --     luasnip.expand_or_jump()
-          --   end
-          -- end, { 'i', 's' }),
-          -- ['<C-h>'] = cmp.mapping(function()
-          --   if luasnip.locally_jumpable(-1) then
-          --    luasnip.jump(-1)
-          --  end
-          -- end, { 'i', 's' }),
+          ['<C-l>'] = cmp.mapping(function()
+            if luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            end
+          end, { 'i', 's' }),
+          ['<C-h>'] = cmp.mapping(function()
+            if luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
+            end
+          end, { 'i', 's' }),
 
           -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -975,9 +775,9 @@ require('lazy').setup({
         },
       }
     end,
-  }, ]]
+  },
 
-  --[[ { -- You can easily change to a different colorscheme.
+  { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
     --
@@ -988,23 +788,13 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-moon'
+      vim.cmd.colorscheme 'tokyonight-night'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
     end,
   },
- ]]
-  {
-    'catppuccin/nvim',
-    init = function()
-      vim.g.catppuccin_flavour = 'mocha'
-    end,
-    config = function()
-      require('catppuccin').setup()
-      vim.cmd 'colorscheme catppuccin'
-    end,
-  },
+
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -1047,7 +837,6 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    -- When upgrading the plugin, you must make sure that all installed parsers are updated to the latest version via :TSUpdate
     build = ':TSUpdate',
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
@@ -1070,37 +859,6 @@ require('lazy').setup({
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 
-      local ts_parsers_status_ok, ts_parsers = pcall(require, 'nvim-treesitter.parsers')
-      if not ts_parsers_status_ok then
-        return
-      end
-
-      local group = vim.api.nvim_create_augroup('FoldsWithTreesitter', { clear = true })
-      local additional_file_types = {
-        'typescriptreact',
-      }
-      local all_file_types = {}
-
-      local parsers = ts_parsers.available_parsers()
-      for _, filetype in ipairs(parsers) do
-        table.insert(all_file_types, filetype)
-      end
-      for _, filetype in ipairs(additional_file_types) do
-        table.insert(all_file_types, filetype)
-      end
-
-      for _, filetype in ipairs(all_file_types) do
-        vim.api.nvim_create_autocmd('FileType', {
-          pattern = filetype,
-          callback = function()
-            vim.wo.foldmethod = 'expr'
-            vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
-            vim.wo.foldenable = false
-          end,
-          group = group,
-        })
-      end
-
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
       --
@@ -1109,17 +867,7 @@ require('lazy').setup({
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
-  {
-    'nvim-treesitter/nvim-treesitter-context',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-    },
-    config = function()
-      require('treesitter-context').setup {
-        max_lines = 3,
-      }
-    end,
-  },
+
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -1171,42 +919,18 @@ require('lazy').setup({
 
 -- self custom
 
-vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>vsp<CR>')
+-- vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>vsp<CR>')
 -- vim.keymap.set({ 'n' }, '<Tab>', '<cmd>bn<CR>')
+-- vim.keymap.set({ 'n' }, '<S-Tab>', '<cmd>bn<CR>')
+
 vim.api.nvim_create_user_command('Cloa', function()
   vim.cmd '%bd|edit#| bd#'
 end, {})
 
 vim.opt.termguicolors = true
---[[ require('bufferline').setup {
+require('bufferline').setup {
 
   options = {
     show_tab_indicators = true,
   },
-} ]]
--- 設置 tab 寬度為 4 個空格
-vim.o.tabstop = 4
--- 設置縮進為 4 個空格
-vim.o.shiftwidth = 4
--- 使用空格來表示 tab
-vim.o.expandtab = true
-
-vim.keymap.set({ 'n', 'x', 'i' }, '<C-d>', function()
-  require('vscode-multi-cursor').addSelectionToNextFindMatch()
-end)
-vim.keymap.set({ 'n', 'x', 'i' }, '<C-l>', function()
-  require('vscode-multi-cursor').selectHighlights()
-end)
-
-vim.api.nvim_set_keymap('i', '<C-h>', '<Left>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '<C-j>', '<Down>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '<C-k>', '<Up>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '<C-l>', '<Right>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'ff', '^', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'fj', '$', { noremap = true, silent = true })
-
-vim.keymap.set('n', '<CR>', 'o<Esc>')
--- vim.keymap.set('n', '<C-CR>', '<S-o>')
-vim.api.nvim_set_keymap('n', '<C-`>', '<cmd>ToggleTerm<CR>', {})
-vim.keymap.set('n', '<C-s>', 'mciw*<Cmd>nohl<CR>', { remap = true })
-
+}
