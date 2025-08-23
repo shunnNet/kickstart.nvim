@@ -93,6 +93,9 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
+-- Enable true color support (required for nvim-tree and many color schemes)
+vim.opt.termguicolors = true
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -229,13 +232,13 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- { 'akinsho/toggleterm.nvim', version = '*', config = true },
-  {
-    'vscode-neovim/vscode-multi-cursor.nvim',
-    event = 'VeryLazy',
-
-    cond = not not vim.g.vscode,
-    opts = {},
-  },
+  -- {
+  --   'vscode-neovim/vscode-multi-cursor.nvim',
+  --   event = 'VeryLazy',
+  --
+  --   cond = not not vim.g.vscode,
+  --   opts = {},
+  -- },
   --[[ {
     'APZelos/blamer.nvim',
     config = function()
@@ -335,7 +338,7 @@ require('lazy').setup({
       end,
     },
   } ]]
-  --[[ {
+  {
     'nvim-tree/nvim-tree.lua',
     version = '*',
     lazy = false,
@@ -343,10 +346,37 @@ require('lazy').setup({
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      require('nvim-tree').setup {}
-      vim.keymap.set({ 'n', 'v' }, '<leader>n', '<cmd>NvimTreeToggle<CR>')
+      require('nvim-tree').setup {
+        view = {
+          side = 'left',
+          width = 30,
+        },
+        renderer = {
+          group_empty = true,
+        },
+        filters = {
+          dotfiles = false,
+        },
+        actions = {
+          open_file = {
+            quit_on_open = false,
+            window_picker = {
+              enable = true,
+            },
+          },
+        },
+        hijack_unnamed_buffer_when_opening = false,
+        hijack_netrw = true,
+        disable_netrw = true,
+        update_focused_file = {
+          enable = true,
+          update_root = false,
+        },
+      }
+      -- Toggle with <leader>e (Space + e)
+      vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle file explorer' })
     end,
-  } ]]
+  },
   -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
@@ -1177,7 +1207,6 @@ vim.api.nvim_create_user_command('Cloa', function()
   vim.cmd '%bd|edit#| bd#'
 end, {})
 
-vim.opt.termguicolors = true
 --[[ require('bufferline').setup {
 
   options = {
@@ -1191,12 +1220,12 @@ vim.o.shiftwidth = 4
 -- 使用空格來表示 tab
 vim.o.expandtab = true
 
-vim.keymap.set({ 'n', 'x', 'i' }, '<C-d>', function()
-  require('vscode-multi-cursor').addSelectionToNextFindMatch()
-end)
-vim.keymap.set({ 'n', 'x', 'i' }, '<C-l>', function()
-  require('vscode-multi-cursor').selectHighlights()
-end)
+-- vim.keymap.set({ 'n', 'x', 'i' }, '<C-d>', function()
+--   require('vscode-multi-cursor').addSelectionToNextFindMatch()
+-- end)
+-- vim.keymap.set({ 'n', 'x', 'i' }, '<C-l>', function()
+--   require('vscode-multi-cursor').selectHighlights()
+-- end)
 
 vim.api.nvim_set_keymap('i', '<C-h>', '<Left>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', '<C-j>', '<Down>', { noremap = true, silent = true })
