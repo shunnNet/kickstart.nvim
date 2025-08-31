@@ -1,0 +1,672 @@
+{
+    "Constructor": {
+        "prefix": "ctor",
+        "body": [
+            "/**",
+            " *",
+            " */",
+            "constructor() {",
+            "\tsuper();",
+            "\t$0",
+            "}"
+        ],
+        "description": "Constructor"
+    },
+    "Class Definition": {
+        "prefix": "class",
+        "body": [
+            "class ${1:name} {",
+            "\tconstructor(${2:parameters}) {",
+            "\t\t$0",
+            "\t}",
+            "}"
+        ],
+        "description": "Class Definition"
+    },
+    "Interface Definition": {
+        "prefix": "iface",
+        "body": ["interface ${1:name} {", "\t$0", "}"],
+        "description": "Interface Definition"
+    },
+    "Public Method Definition": {
+        "prefix": "public method",
+        "body": [
+            "/**",
+            " * ${1:name}",
+            " */",
+            "public ${1:name}() {",
+            "\t$0",
+            "}"
+        ],
+        "description": "Public Method Definition"
+    },
+    "Private Method Definition": {
+        "prefix": "private method",
+        "body": ["private ${1:name}() {", "\t$0", "}"],
+        "description": "Private Method Definition"
+    },
+    "Import external module.": {
+        "prefix": "import statement",
+        "body": ["import { $0 } from \"${1:module}\";"],
+        "description": "Import external module."
+    },
+    "Property getter": {
+        "prefix": "get",
+        "body": [
+            "",
+            "public get ${1:value}() : ${2:string} {",
+            "\t${3:return $0}",
+            "}",
+            ""
+        ],
+        "description": "Property getter"
+    },
+    "Log to the console": {
+        "prefix": "log",
+        "body": ["console.log($1);", "$0"],
+        "description": "Log to the console"
+    },
+    "Log warning to console": {
+        "prefix": "warn",
+        "body": ["console.warn($1);", "$0"],
+        "description": "Log warning to the console"
+    },
+    "Log error to console": {
+        "prefix": "error",
+        "body": ["console.error($1);", "$0"],
+        "description": "Log error to the console"
+    },
+    "Define a full property": {
+        "prefix": "prop",
+        "body": [
+            "",
+            "private _${1:value} : ${2:string};",
+            "public get ${1:value}() : ${2:string} {",
+            "\treturn this._${1:value};",
+            "}",
+            "public set ${1:value}(v : ${2:string}) {",
+            "\tthis._${1:value} = v;",
+            "}",
+            ""
+        ],
+        "description": "Define a full property"
+    },
+    "Triple-slash reference": {
+        "prefix": "ref",
+        "body": ["/// <reference path=\"$1\" />", "$0"],
+        "description": "Triple-slash reference"
+    },
+    "Property setter": {
+        "prefix": "set",
+        "body": [
+            "",
+            "public set ${1:value}(v : ${2:string}) {",
+            "\tthis.$3 = v;",
+            "}",
+            ""
+        ],
+        "description": "Property setter"
+    },
+    "Throw Exception": {
+        "prefix": "throw",
+        "body": ["throw \"$1\";", "$0"],
+        "description": "Throw Exception"
+    },
+    "For Loop": {
+        "prefix": "for",
+        "body": [
+            "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+            "\tconst ${3:element} = ${2:array}[${1:index}];",
+            "\t$0",
+            "}"
+        ],
+        "description": "For Loop"
+    },
+    "For-Each Loop using =>": {
+        "prefix": "foreach =>",
+        "body": ["${1:array}.forEach(${2:element} => {", "\t$0", "});"],
+        "description": "For-Each Loop using =>"
+    },
+    "For-In Loop": {
+        "prefix": "forin",
+        "body": [
+            "for (const ${1:key} in ${2:object}) {",
+            "\tif (${2:object}.hasOwnProperty(${1:key})) {",
+            "\t\tconst ${3:element} = ${2:object}[${1:key}];",
+            "\t\t$0",
+            "\t}",
+            "}"
+        ],
+        "description": "For-In Loop"
+    },
+    "For-Of Loop": {
+        "prefix": "forof",
+        "body": ["for (const ${1:iterator} of ${2:object}) {", "\t$0", "}"],
+        "description": "For-Of Loop"
+    },
+    "For-Await-Of Loop": {
+        "prefix": "forawaitof",
+        "body": [
+            "for await (const ${1:iterator} of ${2:object}) {",
+            "\t$0",
+            "}"
+        ],
+        "description": "For-Await-Of Loop"
+    },
+    "Function Statement": {
+        "prefix": "function",
+        "body": ["function ${1:name}(${2:params}:${3:type}) {", "\t$0", "}"],
+        "description": "Function Statement"
+    },
+    "If Statement": {
+        "prefix": "if",
+        "body": ["if (${1:condition}) {", "\t$0", "}"],
+        "description": "If Statement"
+    },
+    "If-Else Statement": {
+        "prefix": "ifelse",
+        "body": ["if (${1:condition}) {", "\t$2", "} else {", "\t$0", "}"],
+        "description": "If-Else Statement"
+    },
+    "New Statement": {
+        "prefix": "new",
+        "body": ["const ${1:name} = new ${2:type}(${3:arguments});$0"],
+        "description": "New Statement"
+    },
+    "Switch Statement": {
+        "prefix": "switch",
+        "body": [
+            "switch (${1:key}) {",
+            "\tcase ${2:value}:",
+            "\t\t$0",
+            "\t\tbreak;",
+            "",
+            "\tdefault:",
+            "\t\tbreak;",
+            "}"
+        ],
+        "description": "Switch Statement"
+    },
+    "While Statement": {
+        "prefix": "while",
+        "body": ["while (${1:condition}) {", "\t$0", "}"],
+        "description": "While Statement"
+    },
+    "Do-While Statement": {
+        "prefix": "dowhile",
+        "body": ["do {", "\t$0", "} while (${1:condition});"],
+        "description": "Do-While Statement"
+    },
+    "Try-Catch Statement": {
+        "prefix": "trycatch",
+        "body": ["try {", "\t$0", "} catch (${1:error}) {", "\t", "}"],
+        "description": "Try-Catch Statement"
+    },
+    "Set Timeout Function": {
+        "prefix": "settimeout",
+        "body": ["setTimeout(() => {", "\t$0", "}, ${1:timeout});"],
+        "description": "Set Timeout Function"
+    },
+    "Region Start": {
+        "prefix": "#region",
+        "body": ["//#region $0"],
+        "description": "Folding Region Start"
+    },
+    "Region End": {
+        "prefix": "#endregion",
+        "body": ["//#endregion"],
+        "description": "Folding Region End"
+    },
+    "sp-": {
+    "prefix": "//-",
+    "body": [
+      "//---------------------------------------"
+    ],
+    "description": "spliter"
+  },
+  "interface": {
+    "prefix": "interface",
+    "body": [
+      "interface $1 {",
+      "  $2",
+      "}"
+    ],
+    "description": "interface"
+  },
+  "vue extend": {
+    "prefix": "vex",
+    "body": [
+      "extends: $1,"
+    ],
+    "description": "vue extend"
+  },
+  "Vue data option": {
+    "prefix": "vdata",
+    "body": [
+      "data(){",
+      "  return {",
+      "    $1",
+      "  }",
+      "},"
+    ],
+    "description": "Vue data option"
+  },
+  "Vue methods option": {
+    "prefix": "vmethod",
+    "body": [
+      "methods: {",
+      "  $1",
+      "},"
+    ],
+    "description": "Vue methods option"
+  },
+  "Vue watch option": {
+    "prefix": "vwatch",
+    "body": [
+      "watch: {",
+      "  $1",
+      "},"
+    ],
+    "description": "Vue watch option"
+  },
+  "Vue created option": {
+    "prefix": "vcreated",
+    "body": [
+      "created() {",
+      "  $1",
+      "},"
+    ],
+    "description": "Vue created option"
+  },
+  "Vue computed option": {
+    "prefix": "vcomputed",
+    "body": [
+      "computed: {",
+      "  $1",
+      "},"
+    ],
+    "description": "Vue computed option"
+  },
+  "Vue mounted option": {
+    "prefix": "vmounted",
+    "body": [
+      "mounted() {",
+      "  $1",
+      "},"
+    ],
+    "description": "Vue created option"
+  },
+  "vue render": {
+    "prefix": "vrender",
+    "body": [
+      "render(h){\r",
+      "    \r",
+      "  },"
+    ],
+    "description": "vue render"
+  },
+  "vue setup": {
+    "prefix": "vsetup",
+    "body": [
+      "setup(){\r",
+      "  $1",
+      "},"
+    ],
+    "description": "vue setup"
+  },
+  "vue prop required": {
+    "prefix": "vpr",
+    "body": [
+      "$1:{",
+      "  type: $2,",
+      "  required: true,",
+      "},"
+    ],
+    "description": "vue prop required"
+  },
+  "vue prop": {
+    "prefix": "vp",
+    "body": [
+      "$1:{",
+      "  type: $2,",
+      "  default: $3",
+      "},"
+    ],
+    "description": "vue prop required"
+  },
+  "logc": {
+    "prefix": "logc",
+    "body": [
+      "console.log(`%c $1 `, 'background: lightseagreen; color: #fff');"
+    ],
+    "description": "console.log with color"
+  },
+  "istanbul-ignore": {
+    "prefix": "isignore",
+    "body": [
+      "/* istanbul ignore next reason: $0*/"
+    ],
+    "description": "istanbul ignore next"
+  },
+  "before": {
+    "prefix": "bf",
+    "body": [
+      "before(()=> {",
+      "  $0",
+      "})"
+    ],
+    "description": "Cypress before"
+  },
+  "vue-test-utils-start": {
+    "prefix": "vtu",
+    "body": [
+      "import { mount, shallowMount, createLocalVue } from '@vue/test-utils'",
+      "import flushPromises from 'flush-promises'",
+      "import { csrf_field } from '~/test/utils/helpers'",
+      "import cmp from '$1'",
+      "",
+      "csrf_field()",
+      "const $$scrollTo = jest.fn(() => {})",
+      "const $$http = {",
+      "  get: jest.fn(() => {}),",
+      "  post: jest.fn(() => {}),",
+      "}",
+      "",
+      "function makeWrapper(options = {}, typeMount = shallowMount) {",
+      "  return typeMount(cmp, {",
+      "    localVue,",
+      "    mocks: {",
+      "      $$scrollTo,",
+      "      $$http",
+      "    },",
+      "    ...options,",
+      "  })",
+      "}",
+      "const localVue = createLocalVue()",
+      "",
+      "describe('$2.spec.js', () => {",
+      "  it('$3', async () => {",
+      "    const wrapper = makeWrapper()",
+      "",
+      "  });",
+      "});"
+    ],
+    "description": "vue test utils start snippet"
+  },
+  "vue-test-utils-wrapper": {
+    "prefix": "vtuw",
+    "body": [
+      "const wrapper = shallowMount(cmp, {",
+      "  $1",
+      "})"
+    ],
+    "description": "vue-test-utils-wrapper"
+  },
+  "expect tobe functional componets": {
+    "prefix": "vtufc",
+    "body": [
+      "it('is Functional component', async () => {",
+      "  const wrapper = shallowMount(cmp, {",
+      "    localVue",
+      "  })",
+      "  expect(wrapper.isFunctionalComponent).toBe(true)",
+      "})"
+    ],
+    "description": "expect tobe functional componets"
+  },
+  "async arrow function": {
+    "prefix": "asaf",
+    "body": [
+      "async ($1) => {",
+      "  $2",
+      "}"
+    ],
+    "description": "async arrow function with body"
+  },
+  "async function": {
+    "prefix": "asf",
+    "body": [
+      "async $1() {",
+      "  $2",
+      "}"
+    ],
+    "description": "async function"
+  },
+  "true": {
+    "prefix": "tt",
+    "body": [
+      "true"
+    ],
+    "description": "true"
+  },
+  "false": {
+    "prefix": "ff",
+    "body": [
+      "false"
+    ],
+    "description": "false"
+  },
+  "return": {
+    "prefix": "rt",
+    "body": [
+      "return $1"
+    ],
+    "description": "return"
+  },
+  "sp-": {
+    "prefix": "//-",
+    "body": [
+      "//---------------------------------------"
+    ],
+    "description": "spliter"
+  },
+  "vue asyncData": {
+    "prefix": "vas",
+    "body": [
+      "async asyncData(){",
+      "  return {}",
+      "},"
+    ],
+    "description": "Nuxt asyncData"
+  },
+  "co": {
+    "prefix": "co",
+    "body": [
+      "const $1 = $2"
+    ],
+    "description": "const name = value"
+  },
+  "vprops:s": {
+    "prefix": "vprops:s",
+    "body": [
+      "${1:prop}: {",
+      "  type: String,",
+      "  default: ${2:''}",
+      "},"
+    ],
+    "description": "vue props string"
+  },
+  "vprops:n": {
+    "prefix": "vprops:n",
+    "body": [
+      "${1:prop}: {",
+      "  type: Number,",
+      "  default: ${2:0}",
+      "},"
+    ],
+    "description": "vue props number"
+  },
+  "vprops:b": {
+    "prefix": "vprops:b",
+    "body": [
+      "${1:prop}: {",
+      "  type: Boolean,",
+      "  default: ${2:false}",
+      "},"
+    ],
+    "description": "vue props boolean"
+  },
+  "vprops:o": {
+    "prefix": "vprops:o",
+    "body": [
+      "${1:prop}: {",
+      "  type: Object,",
+      "  default: () => ({})",
+      "},"
+    ],
+    "description": "vue props object"
+  },
+  "vprops:a": {
+    "prefix": "vprops:a",
+    "body": [
+      "${1:prop}: {",
+      "  type: Array,",
+      "  default: () => []",
+      "},"
+    ],
+    "description": "vue props array"
+  },
+  "mswr": {
+    "prefix": "mswr",
+    "body": [
+      "rest.${1:get}(url('$2'), (req, res, ctx) => {",
+      "  return res($3)",
+      "})"
+    ],
+    "description": "vue props array"
+  },
+  "eslint-disable": {
+    "prefix": "eslint-disable",
+    "body": [
+      "/* eslint-disable */",
+      "$1",
+      "/* eslint-enable */"
+    ],
+    "description": "eslint-disable"
+  },
+  "caa": {
+    "prefix": "caa",
+    "body": [
+      "const $1 = ${2:async}($3) => {",
+      "  $4",
+      "}"
+    ],
+    "description": "const arrow function with body"
+  },
+  "ca": {
+    "prefix": "ca",
+    "body": [
+      "const $1 = $2($3) => $4"
+    ],
+    "description": "const arrow function"
+  },
+  "handler": {
+    "prefix": "handler",
+    "body": [
+      "const handle$1 = ($3) => {",
+      "  $4",
+      "}"
+    ],
+    "description": "event handle function"
+  },
+  "const await action": {
+    "prefix": "caw",
+    "body": [
+      "const $1 = await $2($3)"
+    ],
+    "description": "const await action"
+  },
+  "await action": {
+    "prefix": "aw",
+    "body": [
+      "await $2($3)"
+    ],
+    "description": "await action"
+  },
+  "im": {
+    "prefix": "im",
+    "body": [
+      "import ${2:*} from \"${1:package}\""
+    ],
+    "description": "import from"
+  },
+  "imp": {
+    "prefix": "imp",
+    "body": [
+      "import {${2:*}} from \"${1:package}\""
+    ],
+    "description": "import from"
+  },
+  "cod": {
+    "prefix": "cod",
+    "body": [
+      "const { $2 } = ${1:source}"
+    ],
+    "description": "const { count } = useCounter()"
+  },
+  "coe": {
+    "prefix": "coe",
+    "body": [
+      "const ${1:name} = ${2:value}"
+    ],
+    "description": "const count = useCounter()"
+  },
+  "coaf": {
+    "prefix": "coaf",
+    "body": [
+      "const ${1:name} = ($2) => {",
+      "  $3",
+      "}"
+    ],
+    "description": "const count = useCounter()"
+  },
+  ":co": {
+    "prefix": ":co",
+    "body": [
+      "// co",
+      "$1",
+      "// co-end"
+    ],
+    "description": "co comment"
+  },
+  ":cos": {
+    "prefix": ":cos",
+    "body": [
+      "// co-source path:$1",
+      "$2",
+      "// co-end"
+    ],
+    "description": "co source"
+  },
+  "exf": {
+    "prefix": "exf",
+    "body": [
+      "export { $2 } from \"$1\""
+    ],
+    "description": "export from"
+  },
+  "imf": {
+    "prefix": "imf",
+    "body": [
+      "import { $2 } from \"$1\""
+    ],
+    "description": "import from"
+  },
+  "imdf": {
+    "prefix": "imdf",
+    "body": [
+      "import $2 from \"$1\""
+    ],
+    "description": "import default from"
+  },
+  "om": {
+		"prefix": "om",
+		"body": [
+			"onMounted(() => {",
+			"  $1",
+			"})"
+		],
+		"description": "onMounted"
+	
+	}
+}
