@@ -68,12 +68,27 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagn
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 local opts = { noremap = true, silent = true }
-vim.keymap.set("n", "<leader>bn", ":BufferNext<CR>", opts)                -- 下一個 buffer
-vim.keymap.set("n", "<leader>bp", ":BufferPrevious<CR>", opts)            -- 上一個 buffer
-vim.keymap.set("n", "<leader>bc", ":BufferClose<CR>", opts)               -- 關閉 buffer
-vim.keymap.set("n", "<leader>bca", ":BufferCloseAllButCurrent<CR>", opts) -- 關閉 buffer
-vim.keymap.set("n", "<leader>bb", ":BufferPick<CR>", opts)                -- 選擇 buffer
+vim.keymap.set("n", "<leader>bn", ":BufferNext<CR>", opts)               -- 下一個 buffer
+vim.keymap.set("n", "<leader>bp", ":BufferPrevious<CR>", opts)           -- 上一個 buffer
+vim.keymap.set("n", "<leader>bc", ":BufferClose<CR>", opts)              -- 關閉 buffer
+vim.keymap.set("n", "<leader>ba", ":BufferCloseAllButCurrent<CR>", opts) -- 關閉 buffer
+vim.keymap.set("n", "<leader>bb", ":BufferPick<CR>", opts)               -- 選擇 buffer
 
 -- 快速水平/垂直分割
 vim.keymap.set("n", "<leader>sh", ":split<CR>", opts)
 vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", opts)
+
+vim.keymap.set('n', '<leader>fp', ':Telescope projects<CR>', { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>do", "<cmd>DiffviewOpen<CR>", { desc = "Open Diffview" })
+vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<CR>", { desc = "Close Diffview" })
+vim.keymap.set("n", "<leader>dh", "<cmd>DiffviewFileHistory<CR>", { desc = "File History" })
+
+vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-w>h]])
+vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>j]])
+vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>k]])
+vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-w>l]])
+
+vim.keymap.set({ 'n' }, '<leader>tf', ':ToggleTerm direction=float<CR>')
+vim.keymap.set({ 'n' }, '<leader>th', ':ToggleTerm direction=vertical<CR>')
+vim.keymap.set({ 'n' }, '<leader>lg', ':ToggleTerm direction=vertical<CR> cmd=lg')

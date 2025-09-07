@@ -668,5 +668,15 @@
 		],
 		"description": "onMounted"
 	
-	}
+	},
+"arrow function": {
+    "prefix": "af",
+    "body": ["() => $1"],
+    "description": "arrow function"
+  },
+  "arrow block function": {
+    "prefix": "afb",
+    "body": ["() => {", "  $1", "}"],
+    "description": "arrow block function"
+  }
 }

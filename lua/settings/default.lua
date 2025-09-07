@@ -64,6 +64,7 @@ return {
     },
     {
         'nvim-tree/nvim-tree.lua',
+
         dependencies = {
             'nvim-tree/nvim-web-devicons',
             'DaikyXendo/nvim-material-icon',
@@ -83,6 +84,10 @@ return {
                 },
                 filters = {
                     dotfiles = false,
+                    git_ignored = false,
+                },
+                live_filter = {
+                    always_show_folders = false,
                 },
                 actions = {
                     open_file = {
@@ -98,7 +103,9 @@ return {
                 update_focused_file = {
                     enable = true,
                     update_root = false,
-                }
+                },
+                update_cwd = true,
+
             })
             vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', {
                 desc = 'Toggle file explorer'
@@ -221,5 +228,51 @@ return {
         config = function()
             require('nvim-surround').setup({})
         end
+    },
+    {
+        'ahmedkhalf/project.nvim',
+        dependencies = {
+            'nvim-telescope/telescope.nvim'
+        },
+        config = function()
+            require('project_nvim').setup({
+                silent_chdir = true
+            })
+            require('telescope').load_extension('projects')
+        end
+    },
+    {
+        'akinsho/toggleterm.nvim',
+        version = "*",
+        config = function()
+            require("toggleterm").setup {
+                size = 20,                -- 水平分割大小
+                open_mapping = [[<C-\>]], -- 開關快捷鍵
+                shade_terminals = true,
+                direction = 'horizontal', -- 預設方向，可改 'float' 或 'vertical'
+                autochdir = true
+            }
+
+            local DIR      = "/Users/net.chen/Library/Application Support/lazygit"
+            local Terminal = require('toggleterm.terminal').Terminal
+            local lazygit  = Terminal:new({
+                cmd = "lazygit",
+                env = {
+                    LG_CONFIG_FILE = DIR ..
+                        "/config.yml,/Users/net.chen/.config/lazygit-catppuccin/themes-mergable/frappe/maroon.yml"
+                },
+                direction = "float",
+                display_name = "lazygit",
+                hidden = true
+            })
+
+            function _lazygit_toggle()
+                lazygit:toggle()
+            end
+
+            vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>",
+                { noremap = true, silent = true })
+        end
     }
+
 }
