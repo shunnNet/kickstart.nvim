@@ -12,12 +12,14 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+vim.opt.foldcolumn = '4'
+
 -- cursor
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 vim.opt.number = true         -- line number
 vim.opt.relativenumber = true -- relative line number
-vim.opt.numberwidth = 10
+-- vim.opt.numberwidth = 2
 
 
 -- Sync clipboard between OS and Neovim
@@ -25,9 +27,12 @@ vim.opt.numberwidth = 10
 vim.opt.clipboard = 'unnamedplus'
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 15
 
 vim.opt.wrap = false -- Wrap line when text reach the end
+
+vim.opt.diffopt = 'internal,filler,closeoff,linematch:40,vertical'
+
 
 vim.api.nvim_set_keymap('i', '<C-h>', '<Left>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', '<C-j>', '<Down>', { noremap = true, silent = true })
@@ -36,7 +41,7 @@ vim.api.nvim_set_keymap('i', '<C-l>', '<Right>', { noremap = true, silent = true
 vim.api.nvim_set_keymap('n', 'ff', '^', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'fj', '$', { noremap = true, silent = true })
 
-vim.keymap.set('n', '<CR>', 'o<Esc>')
+-- vim.keymap.set('n', '<CR>', 'o<Esc>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -78,7 +83,10 @@ vim.keymap.set("n", "<leader>bb", ":BufferPick<CR>", opts)               -- ÈÅ∏Ê
 vim.keymap.set("n", "<leader>sh", ":split<CR>", opts)
 vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", opts)
 
-vim.keymap.set('n', '<leader>fp', ':Telescope projects<CR>', { noremap = true, silent = true })
+-- vim.keymap.set('n', '<leader>fp', ':Telescope projects<CR>', { noremap = true, silent = true })
+
+-- vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<CR>', { noremap = true, silent = true })
+
 
 vim.keymap.set("n", "<leader>do", "<cmd>DiffviewOpen<CR>", { desc = "Open Diffview" })
 vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<CR>", { desc = "Close Diffview" })
@@ -92,3 +100,28 @@ vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-w>l]])
 vim.keymap.set({ 'n' }, '<leader>tf', ':ToggleTerm direction=float<CR>')
 vim.keymap.set({ 'n' }, '<leader>th', ':ToggleTerm direction=vertical<CR>')
 vim.keymap.set({ 'n' }, '<leader>lg', ':ToggleTerm direction=vertical<CR> cmd=lg')
+
+vim.keymap.set({ 'n' }, '<leader>ww', ':wa<CR>', { desc = "Save all buffer", silent = true })
+
+vim.keymap.set({ 'n' }, '<leader>p', 'o<Esc>P', { desc = "Paste to next line", silent = true, noremap = true })
+
+vim.keymap.set({ 'n' }, '<leader>sp', ':Telescope yank_history<CR>',
+    { desc = "Pick yank history", silent = true, noremap = true })
+
+vim.keymap.set('n', '<leader>dv', ':vsplit<CR><C-w>l', { silent = true, noremap = true })
+
+vim.keymap.set('n', '<c-A>', 'ggVG$', { silent = true, noremap = true })
+
+vim.api.nvim_create_user_command("W", "w", {})
+vim.api.nvim_create_user_command("Q", "qa!", {})
+
+
+vim.keymap.set('n', '<leader>nf', function()
+    vim.fn.feedkeys(':e ' .. vim.fn.expand('%:h') .. '/', 'n')
+end, { silent = true, noremap = true })
+
+-- tabs
+vim.keymap.set('n', '<leader>ta', '<cmd>tabnew<cr>', { desc = "Tab New" }) --
+vim.keymap.set('n', '<leader>tn', '<cmd>tabnext<cr>', { desc = "Tab Next" })
+vim.keymap.set('n', '<leader>tc', '<cmd>tabclose<cr>', { desc = "Tab Close" })
+vim.keymap.set('n', '<leader>to', '<cmd>tabonly<cr>', { desc = "Tab Only" })

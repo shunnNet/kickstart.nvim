@@ -1,7 +1,8 @@
+vim.api.nvim_set_hl(0, "LineNr", { bg = "NONE" })
 return {
     {
         'folke/tokyonight.nvim',
-        priority = 1000,
+        priority = 10,
         config = function()
             vim.cmd('colorscheme tokyonight')
         end
@@ -16,7 +17,7 @@ return {
     {
         'catppuccin/nvim',
         name = 'catppuccin',
-        priority = 1000,
+        priority = 50,
         config = function()
             require('catppuccin').setup({ flavour = 'frappe' })
             vim.cmd('colorscheme catppuccin')
@@ -24,14 +25,14 @@ return {
     },
     {
         'Mofiqul/dracula.nvim',
-        priority = 1000,
+        priority = 150,
         config = function()
             vim.cmd('colorscheme dracula')
         end
     },
     {
         'rebelot/kanagawa.nvim',
-        priority = 300,
+        priority = 1,
         config = function()
             require('kanagawa').setup({
                 transparent = true
@@ -41,11 +42,15 @@ return {
     },
     {
         'navarasu/onedark.nvim',
-        priority = 1000,
+        priority = 100,
         config = function()
             require('onedark').setup({
                 style = 'darker',
                 transparent = true,
+                lualine = {
+                    transparent = true, -- lualine center bar transparency
+                },
+
             })
             require('onedark').load()
         end

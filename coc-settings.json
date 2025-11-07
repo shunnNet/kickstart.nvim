@@ -1,0 +1,35 @@
+{
+    "languageserver": {
+      "tailwindcss": {
+        "command": "tailwindcss-language-server",
+        "filetypes": ["html", "jsx", "tsx", "vue", "ts", "js", "jsx"],
+        "rootPatterns": ["tailwind.config.*"]
+      }
+    },
+    "snippets.ultisnips.pythonPrompt": false,
+    "snippets.priority": 90,
+     "snippets.loadFromExtensions": true,
+     "snippets.textmateSnippetsRoots": [
+         "~/snippets",
+         "~/.config/nvim/snippets/snippets"
+     ],
+
+     "snippets.loadVSCodeProjectSnippets": true,
+
+     "snippets.extends": { "javascriptreact": ["javascript"] },
+
+     "snippets.userSnippetsDirectory": "",
+
+    "snippets.shortcut": "S",
+     "snippets.triggerCharacters": [],
+
+     "snippets.disableSyntaxes": [],
+
+     "snippets.execContext": false,
+
+     "snippets.autoTrigger": true,
+     "snippets.ultisnips.enable": false, 
+     "snippets.snipmate.enable": true
+
+
+}

@@ -1,4 +1,35 @@
 vim.o.updatetime = 250
+vim.lsp.set_log_level("OFF")
+vim.o.signcolumn = 'yes'
+
+-- vim.diagnostic.enable(false)
+-- vim.o.shortmess = "astWAIc"
+-- vim.o.report = 99999
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+-- 靜音所有 notify（包含 LSP error）
+-- vim.notify = function(msg, level, opts)
+--     if level == vim.log.levels.ERROR then
+--         -- 想完全不顯示就直接 return
+--         return
+--     end
+--     -- 其他訊息照常顯示
+--     vim.api.nvim_echo({ { msg } }, true, {})
+-- end
+
+
+-- vim.lsp.handlers["window/showMessage"] = function(_, result, ctx)
+--     if result.type == vim.lsp.protocol.MessageType.Error then
+--         return
+--     end
+--     vim.notify(result.message, vim.log.levels[result.type])
+-- end
+-- vim.diagnostic.config({
+--     virtual_text = false, -- 不要在行尾噴紅字
+--     signs = true,         -- 保留 sign column
+--     float = { border = "rounded" },
+--     underline = true,
+--     update_in_insert = false,
+-- })
 
 -- 定義診斷顏色 (可以依需求調整)
 vim.cmd [[
@@ -57,14 +88,14 @@ vim.lsp.config('lua_ls', {
                 enable = false,
             }
         }
-
     }
 })
 
+-- tailwindcss-language-server install is required
 vim.lsp.enable({
     'vue_ls', 'ts_ls', 'eslint', 'tailwindcss'
 })
-
+--
 local function showClientsAttachedBuffers()
     for _, client in pairs(vim.lsp.get_active_clients()) do
         print('Client: ', client.name)
@@ -88,23 +119,24 @@ return {
             local lspconfig = require('lspconfig')
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             local base_on_attach = vim.lsp.config.eslint.on_attach
-            lspconfig.eslint.setup({
-                cmd = { 'vscode-eslint-language-server', '--stdio' },
-                settings = {
-                    format = { enable = true } -- auto fix
-                },
-                on_attach = function(client, buffer)
-                    if not base_on_attach then return end
-                    base_on_attach(client, buffer)
-
-                    vim.api.nvim_create_autocmd('BufWritePre', {
-                        buffer = buffer,
-                        command = 'LspEslintFixAll',
-                    })
-                    local opts = { buffer = buffer, noremap = true, silent = true }
-                    vim.keymap.set('n', "<leader>lf", ":LspEslintFixAll<CR>", opts)
-                end
-            })
+            -- lspconfig.eslint.setup({
+            --     cmd = { 'vscode-eslint-language-server', '--stdio' },
+            --     settings = {
+            --         format = { enable = true } -- auto fix
+            --     },
+            --     on_attach = function(client, buffer)
+            --         if not base_on_attach then return end
+            --         base_on_attach(client, buffer)
+            --
+            --         vim.api.nvim_create_autocmd('BufWritePre', {
+            --             buffer = buffer,
+            --             command = 'silent! LspEslintFixAll',
+            --
+            --         })
+            --         local opts = { buffer = buffer, noremap = true, silent = true }
+            --         vim.keymap.set('n', "<leader>lf", ":LspEslintFixAll<CR>", opts)
+            --     end
+            -- })
 
             vim.api.nvim_create_autocmd('LspAttach', {
                 group = vim.api.nvim_create_augroup('my-lsp-attach', { clear = true }),
@@ -188,6 +220,8 @@ return {
                         })
                     end
 
+                    -- vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#888888", italic = true })
+
                     -- The following autocommand is used to enable inlay hints in your
                     -- code, if the language server you are using supports them
                     --
@@ -196,6 +230,8 @@ return {
                         map('<leader>th', function()
                             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
                         end, '[T]oggle Inlay [H]ints')
+
+                        -- vim.lsp.inlay_hint.enable(true)
                     end
                 end,
             })
@@ -231,6 +267,46 @@ return {
                         end,
                     },
                 },
+                config = function()
+                    local ls = require("luasnip")
+
+                    -- 跳到下一個 placeholder
+                    vim.keymap.set({ "i", "s" }, "<C-l>", function()
+                        ls.jump(1)
+                        -- if ls.jumpable(1) then
+                        -- end
+                    end, { silent = true })
+
+                    -- 跳到上一個 placeholder
+                    vim.keymap.set({ "i", "s" }, "<C-h>", function()
+                        ls.jump(-1)
+                        -- if ls.jumpable(-1) then
+                        -- end
+                    end, { silent = true })
+                    vim.keymap.set({ "i", "s" }, "<C-E>", function()
+                        if ls.choice_active() then
+                            ls.change_choice(1)
+                        end
+                    end, { silent = true })
+
+                    local s = ls.snippet
+                    local i = ls.insert_node
+                    local f = ls.function_node
+
+                    ls.add_snippets("javascript", {
+                        s("get", {
+                            i(1, "count"),
+                            f(function(args)
+                                local n = tonumber(args[1][1]) or 1
+                                local out = {}
+                                for j = 1, n do
+                                    table.insert(out, ("get%02d() { return this._%02d }"):format(j, j))
+                                end
+                                return out
+                            end, { 1 }),
+                        })
+                    })
+                end
             },
             'saadparwaiz1/cmp_luasnip',
 
@@ -238,13 +314,38 @@ return {
             --  nvim-cmp does not ship with all sources by default. They are split
             --  into multiple repos for maintenance purposes.
             'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/nvim-cmp',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-cmdline',
             'hrsh7th/cmp-path',
+            'hrsh7th/cmp-nvim-lsp-signature-help'
         },
         config = function()
             -- See `:help cmp`
             local cmp = require 'cmp'
             local luasnip = require 'luasnip'
             luasnip.config.setup {}
+
+
+            cmp.setup.cmdline('/', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = 'buffer' }
+                }
+            })
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    {
+                        name = 'cmdline',
+                        option = {
+                            ignore_cmds = { 'Man', '!' }
+                        }
+                    }
+                })
+            })
 
             cmp.setup {
                 snippet = {
@@ -310,6 +411,9 @@ return {
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
                     { name = 'path' },
+                    { name = 'buffer' },
+                    { name = 'nvim_lsp_signature_help' }
+
                 },
             }
         end,
@@ -437,7 +541,7 @@ return {
                     code_action = ''
                 },
                 symbol_in_winbar = {
-                    enable = true
+                    enable = false
                 }
             })
         end,
