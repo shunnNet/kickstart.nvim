@@ -104,7 +104,7 @@ return {
         opts = {
             bigfile = { enabled = true },
             dashboard = { enabled = true },
-            explorer = { enabled = true },
+            explorer = { enabled = true, follow_file = false },
             indent = { enabled = true },
             input = { enabled = true },
             notifier = {
@@ -161,15 +161,15 @@ return {
         keys = {
             -- -- Top Pickers & Explorer
             -- { "<leader><space>", function() Snacks.picker.smart() end,                                   desc = "Smart Find Files" },
-            { "<leader>,",  function() Snacks.picker.buffers() end,         desc = "Buffers" },
-            { "<leader>/",  function() Snacks.picker.grep() end,            desc = "Grep" },
+            { "<leader>,",  function() Snacks.picker.buffers() end,                  desc = "Buffers" },
+            { "<leader>/",  function() Snacks.picker.grep() end,                     desc = "Grep" },
 
-            { "<leader>:",  function() Snacks.picker.command_history() end, desc = "Command History" },
+            { "<leader>:",  function() Snacks.picker.command_history() end,          desc = "Command History" },
             -- { "<leader>n",       function() Snacks.picker.notifications() end,                           desc = "Notification History" },
-            { "<leader>e",  function() Snacks.explorer() end,               desc = "File Explorer" },
+            { "<leader>e",  function() Snacks.explorer({ follow_file = false }) end, desc = "File Explorer" },
             -- -- find
-            { "<leader>fb", function() Snacks.picker.buffers() end,         desc = "Buffers" },
-            { "<leader>fg", function() Snacks.picker.grep() end,            desc = "Grep" },
+            { "<leader>fb", function() Snacks.picker.buffers() end,                  desc = "Buffers" },
+            { "<leader>fg", function() Snacks.picker.grep() end,                     desc = "Grep" },
             {
                 "<leader>ff",
                 function()
@@ -376,56 +376,60 @@ return {
                 sections = {
                     lualine_a = { 'mode' },
                     lualine_b = { 'branch', 'diff', 'diagnostics' },
-                    lualine_c = {},
+                    lualine_c = {
+                        {
+                            'filename',
+                            path = 1,
+                        }
+                    },
                     lualine_x = { 'encoding', 'fileformat', 'filetype' },
                     lualine_y = { 'progress' },
-                    lualine_z = { 'location' }
+                    lualine_z = { 'location', 'tabs' }
                 },
                 inactive_sections = {
                     lualine_a = {},
                     lualine_b = {},
-                    lualine_c = {},
+                    lualine_c = {
+                        {
+                            'filename',
+                            path = 1,
+                        }
+                    },
                     lualine_x = { 'location' },
                     lualine_y = {},
                     lualine_z = {}
                 },
                 tabs = {},
 
-                winbar = {
-                    lualine_a = {
-
-                    },
-                    lualine_b = {
-                        'tabs',
-                        {
-                            'filename',
-                            path = 1,
-                        }
-                    },
-                    lualine_c = {
-                    },
-                    lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {
-                    }
-                },
-                inactive_winbar = {
-                    lualine_a = {
-
-                    },
-                    lualine_b = {
-                        {
-                            'filename',
-                            path = 1
-                        } },
-                    lualine_c = {
-
-                    },
-
-                    lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {}
-                }
+                -- winbar = {
+                --     lualine_a = {
+                --
+                --     },
+                --     lualine_b = {
+                --
+                --     },
+                --     lualine_c = {
+                --     },
+                --     lualine_x = {},
+                --     lualine_y = {},
+                --     lualine_z = {
+                --
+                --     }
+                -- },
+                -- inactive_winbar = {
+                --     lualine_a = {
+                --
+                --     },
+                --     lualine_b = {},
+                --
+                --     lualine_c = {
+                --
+                --     },
+                --
+                --     lualine_x = {},
+                --     lualine_y = {},
+                --     lualine_z = {}
+                -- }
             })
         end
     },

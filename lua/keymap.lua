@@ -125,3 +125,5 @@ vim.keymap.set('n', '<leader>ta', '<cmd>tabnew<cr>', { desc = "Tab New" }) --
 vim.keymap.set('n', '<leader>tn', '<cmd>tabnext<cr>', { desc = "Tab Next" })
 vim.keymap.set('n', '<leader>tc', '<cmd>tabclose<cr>', { desc = "Tab Close" })
 vim.keymap.set('n', '<leader>to', '<cmd>tabonly<cr>', { desc = "Tab Only" })
+
+vim.keymap.set('n', '<leader>xl', '<cmd>LspEslintFixAll<cr>', { desc = "ESLint Fix All" })

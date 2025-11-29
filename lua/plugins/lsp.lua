@@ -2,6 +2,7 @@ vim.o.updatetime = 250
 vim.lsp.set_log_level("OFF")
 vim.o.signcolumn = 'yes'
 
+
 -- vim.diagnostic.enable(false)
 -- vim.o.shortmess = "astWAIc"
 -- vim.o.report = 99999
@@ -269,42 +270,57 @@ return {
                 },
                 config = function()
                     local ls = require("luasnip")
+                    local types = require('luasnip.util.types')
 
                     -- 跳到下一個 placeholder
                     vim.keymap.set({ "i", "s" }, "<C-l>", function()
-                        ls.jump(1)
-                        -- if ls.jumpable(1) then
-                        -- end
+                        if ls.jumpable(1) then
+                            ls.jump(1)
+                        end
                     end, { silent = true })
 
                     -- 跳到上一個 placeholder
                     vim.keymap.set({ "i", "s" }, "<C-h>", function()
-                        ls.jump(-1)
-                        -- if ls.jumpable(-1) then
-                        -- end
+                        if ls.jumpable(-1) then
+                            ls.jump(-1)
+                        end
                     end, { silent = true })
-                    vim.keymap.set({ "i", "s" }, "<C-E>", function()
+
+                    -- Next Choice
+                    vim.keymap.set({ "i", "s" }, "<C-j>", function()
                         if ls.choice_active() then
                             ls.change_choice(1)
                         end
                     end, { silent = true })
 
-                    local s = ls.snippet
-                    local i = ls.insert_node
-                    local f = ls.function_node
+                    -- Prev Choice
+                    vim.keymap.set({ "i", "s" }, "<C-k>", function()
+                        if ls.choice_active() then
+                            ls.change_choice(-1)
+                        end
+                    end, { silent = true })
 
-                    ls.add_snippets("javascript", {
-                        s("get", {
-                            i(1, "count"),
-                            f(function(args)
-                                local n = tonumber(args[1][1]) or 1
-                                local out = {}
-                                for j = 1, n do
-                                    table.insert(out, ("get%02d() { return this._%02d }"):format(j, j))
-                                end
-                                return out
-                            end, { 1 }),
-                        })
+
+                    vim.keymap.set({ "i", "s" }, "<c-e>", function()
+                        if ls.expand_or_jumpable() then
+                            ls.expand_or_jump()
+                        end
+                    end)
+
+                    vim.keymap.set('n', "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/lsnip.lua<CR>")
+
+
+                    ls.setup({
+                        history = true,
+                        update_events = "TextChanged,TextChangedI",
+                        enable_autosnippets = true,
+                        ext_opts = {
+                            [types.choiceNode] = {
+                                active = {
+                                    virt_text = { { "choiceNode", "Comment" } },
+                                },
+                            },
+                        },
                     })
                 end
             },
@@ -318,13 +334,14 @@ return {
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
             'hrsh7th/cmp-path',
-            'hrsh7th/cmp-nvim-lsp-signature-help'
+            'hrsh7th/cmp-nvim-lsp-signature-help',
+            'onsails/lspkind.nvim'
         },
         config = function()
             -- See `:help cmp`
             local cmp = require 'cmp'
             local luasnip = require 'luasnip'
-            luasnip.config.setup {}
+            -- luasnip.config.setup {}
 
 
             cmp.setup.cmdline('/', {
@@ -346,6 +363,13 @@ return {
                     }
                 })
             })
+
+
+
+            local lspkind = require('lspkind')
+
+            vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+
 
             cmp.setup {
                 snippet = {
@@ -408,6 +432,9 @@ return {
                     --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
                 },
                 sources = {
+                    -- Copilot Source
+                    { name = "copilot",                group_index = 2 },
+                    -- LSP Source
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
                     { name = 'path' },
@@ -415,6 +442,33 @@ return {
                     { name = 'nvim_lsp_signature_help' }
 
                 },
+                window = {
+                    completion = cmp.config.window.bordered(),
+                    documentation = cmp.config.window.bordered(),
+                },
+                formatting = {
+                    format = lspkind.cmp_format({
+                        mode = "text_symbol",
+                        symbol_map = { Copilot = "" },
+                        maxwidth = {
+                            -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                            -- can also be a function to dynamically calculate max width such as
+                            -- menu = function() return math.floor(0.45 * vim.o.columns) end,
+                            menu = 50,            -- leading text (labelDetails)
+                            abbr = 50,            -- actual suggestion item
+                        },
+                        ellipsis_char = '...',    -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                        show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+
+                        -- The function below will be called before any actual modifications from lspkind
+                        -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+                        -- before = function(entry, vim_item)
+                        --     -- ...
+                        --     return vim_item
+                        -- end
+
+                    })
+                }
             }
         end,
     },
@@ -540,9 +594,9 @@ return {
                     title = true,
                     code_action = ''
                 },
-                symbol_in_winbar = {
-                    enable = false
-                }
+                -- symbol_in_winbar = {
+                --     enable = false
+                -- }
             })
         end,
         dependencies = {
@@ -552,21 +606,23 @@ return {
     },
     {
         'stevearc/conform.nvim',
-        opts = {
-            formatters_by_ft = {
-                javascript = { 'prettier' },
-                typescript = { 'prettier' },
-                vue = { 'prettier' },
-                json = { 'prettier' },
-                markdown = { 'prettier' },
-                html = { 'prettier' }
-            },
-            format_on_save = {
-                lsp_fallback = true,
-                async = false,
-                timeout_ms = 500,
-            }
-        }
+        config = function()
+            require('conform').setup({
+                formatters_by_ft = {
+                    javascript = { 'prettierd' },
+                    typescript = { 'prettierd' },
+                    vue = { 'prettierd' },
+                    json = { 'prettierd' },
+                    markdown = { 'prettierd' },
+                    html = { 'prettierd' }
+                },
+                format_on_save = {
+                    lsp_fallback = true,
+                    async = false,
+                    timeout_ms = 1000,
+                }
+            })
+        end
     },
     -- {
     --     "catgoose/nvim-colorizer.lua",
@@ -579,6 +635,124 @@ return {
             require('nvim-highlight-colors').setup {
                 enable_tailwind = true
             }
+        end
+    },
+    {
+        'zbirenbaum/copilot.lua',
+        dependencies = {
+            'copilotlsp-nvim/copilot-lsp'
+        },
+        cmd = "Copilot",
+        event = "InsertEnter",
+        config = function()
+            require("copilot").setup({
+                suggestion = {
+                    enabled = false,
+                    -- auto_trigger = true,
+                    -- keymap = {
+                    --     accept = "<C-l>",
+                    -- },
+                },
+                panel = {
+                    enabled = false,
+                },
+                -- nes = {
+                --     enabled = true,
+                --     keymap = {
+                --         accept_and_goto = "<c-a>",
+                --         accept = false,
+                --         dismiss = "<Esc>",
+                --     },
+                -- },
+            })
+        end,
+    },
+    {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+            require("copilot_cmp").setup()
+        end
+    },
+    {
+        'onsails/lspkind.nvim',
+        config = function()
+            local lspkind = require('lspkind')
+            lspkind.setup({
+                formatting = {
+                    format = lspkind.cmp_format({
+                        mode = 'symbol', -- show only symbol annotations
+                        maxwidth = {
+                            -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                            -- can also be a function to dynamically calculate max width such as
+                            -- menu = function() return math.floor(0.45 * vim.o.columns) end,
+                            menu = 50,            -- leading text (labelDetails)
+                            abbr = 50,            -- actual suggestion item
+                        },
+                        ellipsis_char = '...',    -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                        show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+
+                        -- The function below will be called before any actual modifications from lspkind
+                        -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+                        before = function(entry, vim_item)
+                            -- ...
+                            return vim_item
+                        end
+                    })
+                }
+            })
+            lspkind.init({
+                -- DEPRECATED (use mode instead): enables text annotations
+                --
+                -- default: true
+                -- with_text = true,
+
+                -- defines how annotations are shown
+                -- default: symbol
+                -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+                mode = 'symbol_text',
+
+                -- default symbol map
+                -- can be either 'default' (requires nerd-fonts font) or
+                -- 'codicons' for codicon preset (requires vscode-codicons font)
+                --
+                -- default: 'default'
+                preset = 'codicons',
+
+                -- override preset symbols
+                --
+                -- default: {}
+                symbol_map = {
+                    Text = "󰉿",
+                    Method = "󰆧",
+                    Function = "󰊕",
+                    Constructor = "",
+                    Field = "󰜢",
+                    Variable = "󰀫",
+                    Class = "󰠱",
+                    Interface = "",
+                    Module = "",
+                    Property = "󰜢",
+                    Unit = "󰑭",
+                    Value = "󰎠",
+                    Enum = "",
+                    Keyword = "󰌋",
+                    Snippet = "",
+                    Color = "󰏘",
+                    File = "󰈙",
+                    Reference = "󰈇",
+                    Folder = "󰉋",
+                    EnumMember = "",
+                    Constant = "󰏿",
+                    Struct = "󰙅",
+                    Event = "",
+                    Operator = "󰆕",
+                    TypeParameter = "",
+                    Copilot = "",
+                },
+
+            })
+
+            vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
         end
     }
 

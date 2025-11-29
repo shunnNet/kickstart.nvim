@@ -32,7 +32,7 @@ return {
     },
     {
         'rebelot/kanagawa.nvim',
-        priority = 1,
+        priority = 10,
         config = function()
             require('kanagawa').setup({
                 transparent = true
@@ -42,7 +42,7 @@ return {
     },
     {
         'navarasu/onedark.nvim',
-        priority = 100,
+        priority = 1,
         config = function()
             require('onedark').setup({
                 style = 'darker',
