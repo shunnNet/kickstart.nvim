@@ -728,6 +728,26 @@ return {
             }
         }
     },
+    -- lazy.nvim
+    {
+        "Piotr1215/pairup.nvim",
+        cmd = { "Pairup" },
+        keys = {
+            { "<leader>cc", "<cmd>Pairup start<cr>",     desc = "Start Claude" },
+            { "<leader>ct", "<cmd>Pairup toggle<cr>",    desc = "Toggle terminal" },
+            { "<leader>cq", "<cmd>Pairup questions<cr>", desc = "Show questions" },
+            { "<leader>cx", "<cmd>Pairup stop<cr>",      desc = "Stop Claude" },
+        },
+        config = function()
+            require("pairup").setup()
+            -- Default works out of the box. Override only if needed:
+            -- require("pairup").setup({
+            --   providers = {
+            --     claude = { cmd = "claude --permission-mode plan" },
+            --   },
+            -- })
+        end,
+    }
 
 
     -- Lua

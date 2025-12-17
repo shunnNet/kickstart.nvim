@@ -25,7 +25,7 @@ return {
     },
     {
         'Mofiqul/dracula.nvim',
-        priority = 150,
+        priority = 10,
         config = function()
             vim.cmd('colorscheme dracula')
         end

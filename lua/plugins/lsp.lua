@@ -92,6 +92,22 @@ vim.lsp.config('lua_ls', {
     }
 })
 
+vim.lsp.config('tailwindcss', {
+    -- settings = {
+    --     tailwindCSS = {
+    --         classAttributes = {
+    --             'class',
+    --             'className',
+    --             'class:list',
+    --             'classList',
+    --             'ngClass',
+    --             'ui',
+    --             ':ui'
+    --         },
+    --     }
+    -- }
+})
+
 -- tailwindcss-language-server install is required
 vim.lsp.enable({
     'vue_ls', 'ts_ls', 'eslint', 'tailwindcss'
@@ -433,7 +449,7 @@ return {
                 },
                 sources = {
                     -- Copilot Source
-                    { name = "copilot",                group_index = 2 },
+                    -- { name = "copilot",                group_index = 2 },
                     -- LSP Source
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
@@ -637,42 +653,42 @@ return {
             }
         end
     },
-    {
-        'zbirenbaum/copilot.lua',
-        dependencies = {
-            'copilotlsp-nvim/copilot-lsp'
-        },
-        cmd = "Copilot",
-        event = "InsertEnter",
-        config = function()
-            require("copilot").setup({
-                suggestion = {
-                    enabled = false,
-                    -- auto_trigger = true,
-                    -- keymap = {
-                    --     accept = "<C-l>",
-                    -- },
-                },
-                panel = {
-                    enabled = false,
-                },
-                -- nes = {
-                --     enabled = true,
-                --     keymap = {
-                --         accept_and_goto = "<c-a>",
-                --         accept = false,
-                --         dismiss = "<Esc>",
-                --     },
-                -- },
-            })
-        end,
-    },
-    {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-            require("copilot_cmp").setup()
-        end
-    },
+    -- {
+    --     'zbirenbaum/copilot.lua',
+    --     dependencies = {
+    --         'copilotlsp-nvim/copilot-lsp'
+    --     },
+    --     cmd = "Copilot",
+    --     event = "InsertEnter",
+    --     config = function()
+    --         require("copilot").setup({
+    --             suggestion = {
+    --                 enabled = false,
+    --                 -- auto_trigger = true,
+    --                 -- keymap = {
+    --                 --     accept = "<C-l>",
+    --                 -- },
+    --             },
+    --             panel = {
+    --                 enabled = false,
+    --             },
+    --             -- nes = {
+    --             --     enabled = true,
+    --             --     keymap = {
+    --             --         accept_and_goto = "<c-a>",
+    --             --         accept = false,
+    --             --         dismiss = "<Esc>",
+    --             --     },
+    --             -- },
+    --         })
+    --     end,
+    -- },
+    -- {
+    --     "zbirenbaum/copilot-cmp",
+    --     config = function()
+    --         require("copilot_cmp").setup()
+    --     end
+    -- },
     {
         'onsails/lspkind.nvim',
         config = function()
