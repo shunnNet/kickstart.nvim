@@ -190,7 +190,14 @@ return {
             },
 
             -- { "<leader>fg", function() Snacks.picker.git_files() end,             desc = "Find Git Files" },
-            { "<leader>fp", function() Snacks.picker.projects() end,                                desc = "Projects" },
+            { "<leader>fp", function() Snacks.picker.projects({
+                -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#projects
+                patterns = { ".git" },
+                dev = {
+                    "~/repository",
+                    "~/repository/104/"
+                }
+            }) end,                                desc = "Projects" },
             { "<leader>fr", function() Snacks.picker.recent() end,                                  desc = "Recent" },
             { "<leader>fs", function() Snacks.picker.lsp_symbols() end,                             desc = "LSP Symbols" },
             { "<leader>fS", function() Snacks.picker.lsp_workspace_symbols() end,                   desc = "LSP Workspace Symbols" },
