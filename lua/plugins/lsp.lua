@@ -108,9 +108,23 @@ vim.lsp.config('tailwindcss', {
     -- }
 })
 
+vim.lsp.config('yamlls', {
+    settings = {
+        yaml = {
+            schemas = {
+                -- 如果需要，可以在這裡添加特定的 schema 設定
+                -- ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+            },
+            validate = true,
+            hover = true,
+            completion = true,
+        }
+    }
+})
+
 -- tailwindcss-language-server install is required
 vim.lsp.enable({
-    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss'
+    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls'
 })
 --
 local function showClientsAttachedBuffers()
@@ -556,6 +570,7 @@ return {
             require('mason-lspconfig').setup({
                 ensure_installed = {
                     'lua_ls',
+                    'yamlls',
                 },
             })
         end
@@ -630,7 +645,8 @@ return {
                     vue = { 'prettierd' },
                     json = { 'prettierd' },
                     markdown = { 'prettierd' },
-                    html = { 'prettierd' }
+                    html = { 'prettierd' },
+                    yaml = { 'prettierd' }
                 },
                 -- format_on_save = {
                 --

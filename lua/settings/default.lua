@@ -36,7 +36,8 @@ return {
                 vue = { 'prettier' },
                 json = { 'prettier' },
                 markdown = { 'prettier' },
-                html = { 'prettier' }
+                html = { 'prettier' },
+                yaml = { 'prettier' }
             },
             format_on_save = {
                 lsp_fallback = true,
