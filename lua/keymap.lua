@@ -127,3 +127,6 @@ vim.keymap.set('n', '<leader>tc', '<cmd>tabclose<cr>', { desc = "Tab Close" })
 vim.keymap.set('n', '<leader>to', '<cmd>tabonly<cr>', { desc = "Tab Only" })
 
 vim.keymap.set('n', '<leader>xl', '<cmd>LspEslintFixAll<cr>', { desc = "ESLint Fix All" })
+vim.keymap.set('n', '<leader>xp', function()
+    require("conform").format({ async = false, lsp_fallback = true })
+end, { desc = "Format with Prettier" })
