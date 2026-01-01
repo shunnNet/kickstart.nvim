@@ -122,9 +122,18 @@ vim.lsp.config('yamlls', {
     }
 })
 
+vim.lsp.config('jsonls', {
+    settings = {
+        json = {
+            schemas = require('schemastore').json.schemas(),
+            validate = { enable = true },
+        }
+    }
+})
+
 -- tailwindcss-language-server install is required
 vim.lsp.enable({
-    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls'
+    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls', 'jsonls'
 })
 --
 local function showClientsAttachedBuffers()
@@ -571,6 +580,7 @@ return {
                 ensure_installed = {
                     'lua_ls',
                     'yamlls',
+                    'jsonls',
                 },
             })
         end
