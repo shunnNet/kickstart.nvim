@@ -1,48 +1,51 @@
 vim.api.nvim_set_hl(0, "LineNr", { bg = "NONE" })
+
 return {
     {
         'folke/tokyonight.nvim',
-        priority = 10,
-        config = function()
-            vim.cmd('colorscheme tokyonight')
-        end
+        lazy = false,
+        priority = 1000,
     },
     {
         'ellisonleao/gruvbox.nvim',
+        lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd('colorscheme gruvbox')
+            local theme_manager = require('utils.theme_manager')
+            -- 設定自動儲存主題變更
+            theme_manager.setup_auto_save()
+            -- 載入上次選擇的主題
+            theme_manager.apply_last_theme()
         end
     },
     {
         'catppuccin/nvim',
         name = 'catppuccin',
-        priority = 50,
+        lazy = false,
+        priority = 1000,
         config = function()
             require('catppuccin').setup({ flavour = 'frappe' })
-            vim.cmd('colorscheme catppuccin')
         end
     },
     {
         'Mofiqul/dracula.nvim',
-        priority = 10,
-        config = function()
-            vim.cmd('colorscheme dracula')
-        end
+        lazy = false,
+        priority = 1000,
     },
     {
         'rebelot/kanagawa.nvim',
-        priority = 10,
+        lazy = false,
+        priority = 1000,
         config = function()
             require('kanagawa').setup({
                 transparent = true
             })
-            vim.cmd('colorscheme kanagawa')
         end
     },
     {
         'navarasu/onedark.nvim',
-        priority = 1,
+        lazy = false,
+        priority = 1000,
         config = function()
             require('onedark').setup({
                 style = 'darker',
@@ -50,9 +53,7 @@ return {
                 lualine = {
                     transparent = true, -- lualine center bar transparency
                 },
-
             })
-            require('onedark').load()
         end
     }
 }

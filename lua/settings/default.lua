@@ -240,7 +240,7 @@ return {
             { "<leader>sq", function() Snacks.picker.qflist() end,                                  desc = "Quickfix List" },
             { "<leader>sr", function() Snacks.picker.resume() end,                                  desc = "Resume" },
             -- { "<leader>su", function() Snacks.picker.undo() end,                  desc = "Undo History" },
-            -- { "<leader>uC", function() Snacks.picker.colorschemes() end,          desc = "Colorschemes" },
+            { "<leader>uC", function() Snacks.picker.colorschemes() end,                            desc = "Colorschemes" },
             -- LSP
             -- { "gd",         function() Snacks.picker.lsp_definitions() end,       desc = "Goto Definition" },
             -- { "gD",         function() Snacks.picker.lsp_declarations() end,      desc = "Goto Declaration" },
@@ -257,6 +257,8 @@ return {
             -- { "<leader>n",  function() Snacks.notifier.show_history() end,        desc = "Notification History" },
             -- { "<leader>bd", function() Snacks.bufdelete() end,               desc = "Delete Buffer" },
             { "<leader>cR", function() Snacks.rename.rename_file() end,                             desc = "Rename File" },
+            { "<leader>fd", function() require('utils.file_operations').delete_current_file() end,  desc = "Delete File" },
+            { "<leader>fn", function() require('utils.file_operations').create_new_file() end,      desc = "New File" },
             -- { "<leader>gB", function() Snacks.gitbrowse() end,                    desc = "Git Browse",               mode = { "n", "v" } },
             -- { "<leader>gg", function() Snacks.lazygit() end,                      desc = "Lazygit" },
             -- { "<leader>un", function() Snacks.notifier.hide() end,           desc = "Dismiss All Notifications" },
@@ -703,6 +705,51 @@ return {
             vim.g.mkdp_filetypes = { "markdown" }
         end,
         ft = { "markdown" },
+    },
+    {
+        'OXY2DEV/markview.nvim',
+        lazy = false,
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons'
+        },
+        config = function()
+            require('markview').setup({
+                modes = { "n", "no", "c" }, -- 只在 normal mode 顯示
+                hybrid_modes = { "n" },      -- 混合模式
+
+                callbacks = {
+                    on_enable = function(_, win)
+                        vim.wo[win].conceallevel = 2
+                        vim.wo[win].concealcursor = "c"
+                    end
+                }
+            })
+        end
+    },
+    {
+        'nvim-treesitter/nvim-treesitter',
+        build = ':TSUpdate',
+        config = function()
+            require('nvim-treesitter.configs').setup({
+                ensure_installed = {
+                    'markdown',
+                    'markdown_inline',
+                    'html',
+                    'lua',
+                    'vim',
+                    'vimdoc',
+                    'javascript',
+                    'typescript',
+                    'vue',
+                },
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = { 'markdown' }
+                },
+                indent = { enable = true },
+            })
+        end
     },
     -- {
     --     "chrisgrieser/nvim-origami",

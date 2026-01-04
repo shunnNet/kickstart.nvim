@@ -116,9 +116,10 @@ vim.api.nvim_create_user_command("W", "w", {})
 vim.api.nvim_create_user_command("Q", "qa!", {})
 
 
-vim.keymap.set('n', '<leader>nf', function()
-    vim.fn.feedkeys(':e ' .. vim.fn.expand('%:h') .. '/', 'n')
-end, { silent = true, noremap = true })
+-- 已改用 utils.file_operations.create_new_file()
+-- vim.keymap.set('n', '<leader>nf', function()
+--     vim.fn.feedkeys(':e ' .. vim.fn.expand('%:h') .. '/', 'n')
+-- end, { silent = true, noremap = true })
 
 -- tabs
 vim.keymap.set('n', '<leader>ta', '<cmd>tabnew<cr>', { desc = "Tab New" }) --
@@ -130,3 +131,9 @@ vim.keymap.set('n', '<leader>xl', '<cmd>LspEslintFixAll<cr>', { desc = "ESLint F
 vim.keymap.set('n', '<leader>xp', function()
     require("conform").format({ async = false, lsp_fallback = true })
 end, { desc = "Format with Prettier" })
+
+-- Markdown
+vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreview<cr>', { desc = "Markdown Preview" })
+vim.keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<cr>', { desc = "Markdown Preview Stop" })
+vim.keymap.set('n', '<leader>mt', '<cmd>Markview toggle<cr>', { desc = "Toggle Markview" })
+vim.keymap.set('n', '<leader>mh', '<cmd>Markview hybridToggle<cr>', { desc = "Toggle Markview Hybrid Mode" })

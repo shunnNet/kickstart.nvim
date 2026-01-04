@@ -133,7 +133,7 @@ vim.lsp.config('jsonls', {
 
 -- tailwindcss-language-server install is required
 vim.lsp.enable({
-    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls', 'jsonls'
+    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls', 'jsonls', 'marksman'
 })
 --
 local function showClientsAttachedBuffers()
@@ -581,6 +581,7 @@ return {
                     'lua_ls',
                     'yamlls',
                     'jsonls',
+                    'marksman',
                 },
             })
         end
