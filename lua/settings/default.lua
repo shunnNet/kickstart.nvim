@@ -1,15 +1,37 @@
 -- vim.notify('Test notify message', vim.log.levels.ERROR)
 
 -- vim.print("Test", { A = 123 })
+--
 
-vim.api.nvim_create_user_command(
-    'Hello',
-    function()
-        require('hello').say_hello()
-    end,
-    {}
-)
--- require('window')
+--[[ local group = vim.api.nvim_create_augroup('User', { clear = true })
+-- { clear = true } 的作用等同於 Vimscript 中的 :autocmd!，
+-- 確保每次載入時都會清除此群組中的舊定義。
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = group,
+    pattern = "*",
+    callback = function()
+        local name = vim.api.nvim_buf_get_name(0)
+        vim.notify('Successfully saved: ' .. name)
+    end
+}) ]]
+
+local function get_file_size()
+    local path = vim.fn.expand("%:p") -- make path absolute
+    local fsize = vim.fn.getfsize(path)
+
+    local units = { 'B', 'KiB', 'MiB', 'GiB', 'TiB' }
+    local i = 0
+
+    while fsize >= 1024 and i < #units - 1 do
+        fsize = fsize / 1024
+        i = i + 1
+    end
+
+    -- 格式化輸出，保留兩位小數 (%.2f %s)
+    return string.format("%.0f %s", fsize, units[i + 1])
+end
+
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -395,7 +417,10 @@ return {
                             path = 1,
                         }
                     },
-                    lualine_x = { 'encoding', 'fileformat', 'filetype' },
+                    lualine_x = {
+                        get_file_size,
+                        'encoding', 'fileformat', 'filetype'
+                    },
                     lualine_y = { 'progress' },
                     lualine_z = { 'location', 'tabs' }
                 },
