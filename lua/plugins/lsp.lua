@@ -193,7 +193,47 @@ return {
                     -- Jump to the definition of the word under your cursor.
                     --  This is where a variable was first declared, or where a function is defined, etc.
                     --  To jump back, press <C-t>.
-                    map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+                    map('gd', function()
+                        local clients = vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/definition' })
+                        local encoding = (clients[1] and clients[1].offset_encoding) or 'utf-16'
+                        local params = vim.lsp.util.make_position_params(0, encoding)
+                        ---@type lsp.Location[]
+                        local all_results = {}
+                        local remaining = #clients
+
+                        if remaining == 0 then
+                            vim.notify('No LSP clients support definition', vim.log.levels.WARN)
+                            return
+                        end
+
+                        for _, client in ipairs(clients) do
+                            client:request('textDocument/definition', params, function(err, result)
+                                if result then
+                                    -- normalize: result can be a single Location or Location[]
+                                    if result.uri or result.targetUri then
+                                        table.insert(all_results, result)
+                                    else
+                                        for _, loc in ipairs(result) do
+                                            table.insert(all_results, loc)
+                                        end
+                                    end
+                                end
+                                remaining = remaining - 1
+                                if remaining == 0 then
+                                    if #all_results == 0 then
+                                        vim.notify('No definitions found', vim.log.levels.INFO)
+                                    elseif #all_results == 1 then
+                                        local loc = all_results[1]
+                                        local uri = loc.uri or loc.targetUri
+                                        local range = loc.range or loc.targetSelectionRange
+                                        vim.lsp.util.show_document({ uri = uri, range = range }, encoding, { focus = true })
+                                    else
+                                        require('telescope.builtin').lsp_definitions()
+                                    end
+                                end
+                            end, 0)
+                        end
+                    end, '[G]oto [D]efinition')
 
                     -- Find references for the word under your cursor.
                     map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')

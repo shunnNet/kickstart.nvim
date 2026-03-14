@@ -78,6 +78,7 @@ vim.keymap.set("n", "<leader>bp", ":BufferPrevious<CR>", opts)           -- 上�
 vim.keymap.set("n", "<leader>bc", ":BufferClose<CR>", opts)              -- 關閉 buffer
 vim.keymap.set("n", "<leader>ba", ":BufferCloseAllButCurrent<CR>", opts) -- 關閉 buffer
 vim.keymap.set("n", "<leader>bb", ":BufferPick<CR>", opts)               -- 選擇 buffer
+vim.keymap.set("n", "<leader>br", ":e!<CR>", opts)                       -- 重新載入檔案
 
 -- 快速水平/垂直分割
 vim.keymap.set("n", "<leader>sh", ":split<CR>", opts)

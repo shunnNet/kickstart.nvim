@@ -143,6 +143,11 @@ return {
                 --     height = 20,
                 --     preview = true,
                 -- },
+                sources = {
+                    explorer = {
+                        include = { ".claude", ".github", ".local", ".worktree" },
+                    },
+                },
             },
             -- picker = { enabled = true },
             quickfile = { enabled = true },
@@ -193,6 +198,7 @@ return {
             { "<leader>:",  function() Snacks.picker.command_history() end,          desc = "Command History" },
             -- { "<leader>n",       function() Snacks.picker.notifications() end,                           desc = "Notification History" },
             { "<leader>e",  function() Snacks.explorer({ follow_file = false }) end, desc = "File Explorer" },
+            { "<leader>E",  function() Snacks.explorer({ follow_file = true }) end,  desc = "Explorer (Focus File)" },
             -- -- find
             { "<leader>fb", function() Snacks.picker.buffers() end,                  desc = "Buffers" },
             { "<leader>fg", function() Snacks.picker.grep() end,                     desc = "Grep" },
@@ -218,10 +224,12 @@ return {
             -- { "<leader>fg", function() Snacks.picker.git_files() end,             desc = "Find Git Files" },
             { "<leader>fp", function() Snacks.picker.projects({
                 -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#projects
-                patterns = { ".git" },
+                patterns = { ".git", "CLAUDE.md" },
                 dev = {
+                    "~",
                     "~/repository",
-                    "~/repository/104/"
+                    "~/repository/104/",
+                    "~/repository/104/k8s",
                 }
             }) end,                                desc = "Projects" },
             { "<leader>fr", function() Snacks.picker.recent() end,                                  desc = "Recent" },
@@ -640,19 +648,17 @@ return {
             require('which-key').setup()
 
             -- Document existing key chains
-            require('which-key').register {
-                ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-                ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-                ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-                ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-                ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-                ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-                ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-            }
-            -- visual mode
-            require('which-key').register({
-                ['<leader>h'] = { 'Git [H]unk' },
-            }, { mode = 'v' })
+            require('which-key').add({
+                { "<leader>c", group = "[C]ode" },
+                { "<leader>d", group = "[D]ocument" },
+                { "<leader>r", group = "[R]ename" },
+                { "<leader>s", group = "[S]earch" },
+                { "<leader>w", group = "[W]orkspace" },
+                { "<leader>t", group = "[T]oggle" },
+                { "<leader>h", group = "Git [H]unk" },
+                -- visual mode
+                { "<leader>h", group = "Git [H]unk", mode = "v" },
+            })
         end,
     },
     {
@@ -731,27 +737,27 @@ return {
         end,
         ft = { "markdown" },
     },
-    {
-        'OXY2DEV/markview.nvim',
-        lazy = false,
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter',
-            'nvim-tree/nvim-web-devicons'
-        },
-        config = function()
-            require('markview').setup({
-                modes = { "n", "no", "c" }, -- 只在 normal mode 顯示
-                hybrid_modes = { "n" },      -- 混合模式
-
-                callbacks = {
-                    on_enable = function(_, win)
-                        vim.wo[win].conceallevel = 2
-                        vim.wo[win].concealcursor = "c"
-                    end
-                }
-            })
-        end
-    },
+    -- {
+    --     'OXY2DEV/markview.nvim',
+    --     lazy = false,
+    --     dependencies = {
+    --         'nvim-treesitter/nvim-treesitter',
+    --         'nvim-tree/nvim-web-devicons'
+    --     },
+    --     config = function()
+    --         require('markview').setup({
+    --             modes = { "n", "no", "c" }, -- 只在 normal mode 顯示
+    --             hybrid_modes = { "n" },      -- 混合模式
+    --
+    --             callbacks = {
+    --                 on_enable = function(_, win)
+    --                     vim.wo[win].conceallevel = 2
+    --                     vim.wo[win].concealcursor = "c"
+    --                 end
+    --             }
+    --         })
+    --     end
+    -- },
     {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',

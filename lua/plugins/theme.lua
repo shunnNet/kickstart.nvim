@@ -1,4 +1,12 @@
 vim.api.nvim_set_hl(0, "LineNr", { bg = "NONE" })
+vim.api.nvim_set_hl(0, "SnacksPickerGitStatusUntracked", { fg = "#98c379" })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = function()
+        vim.api.nvim_set_hl(0, "SnacksPickerGitStatusUntracked", { fg = "#98c379" })
+    end,
+})
 
 return {
     {
@@ -47,8 +55,9 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
+            -- https://github.com/navarasu/onedark.nvim?tab=readme-ov-file#themes
             require('onedark').setup({
-                style = 'darker',
+                style = 'warmer',
                 transparent = true,
                 lualine = {
                     transparent = true, -- lualine center bar transparency
