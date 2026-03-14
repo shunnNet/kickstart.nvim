@@ -130,7 +130,7 @@ return {
         opts = {
             bigfile = { enabled = true },
             dashboard = { enabled = true },
-            explorer = { enabled = true, follow_file = false },
+            explorer = { enabled = true },
             indent = { enabled = true },
             input = { enabled = true },
             notifier = {
@@ -146,6 +146,9 @@ return {
                 sources = {
                     explorer = {
                         include = { ".claude", ".github", ".local", ".worktree" },
+                        layout = { preset = "default" },
+                        auto_close = true,
+                        jump = { close = true },
                     },
                 },
             },
@@ -197,8 +200,7 @@ return {
 
             { "<leader>:",  function() Snacks.picker.command_history() end,          desc = "Command History" },
             -- { "<leader>n",       function() Snacks.picker.notifications() end,                           desc = "Notification History" },
-            { "<leader>e",  function() Snacks.explorer({ follow_file = false }) end, desc = "File Explorer" },
-            { "<leader>E",  function() Snacks.explorer({ follow_file = true }) end,  desc = "Explorer (Focus File)" },
+            { "<leader>e",  function() Snacks.explorer() end,                        desc = "File Explorer" },
             -- -- find
             { "<leader>fb", function() Snacks.picker.buffers() end,                  desc = "Buffers" },
             { "<leader>fg", function() Snacks.picker.grep() end,                     desc = "Grep" },
