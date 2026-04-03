@@ -131,9 +131,11 @@ vim.lsp.config('jsonls', {
     }
 })
 
+vim.lsp.config('pyright', {})
+
 -- tailwindcss-language-server install is required
 vim.lsp.enable({
-    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls', 'jsonls', 'marksman'
+    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls', 'jsonls', 'marksman', 'pyright'
 })
 --
 local function showClientsAttachedBuffers()
@@ -622,6 +624,7 @@ return {
                     'yamlls',
                     'jsonls',
                     'marksman',
+                    'pyright',
                 },
             })
         end
@@ -632,6 +635,7 @@ return {
         config = function()
             require('lint').linters_by_ft = {
                 yaml = { 'yamllint' },
+                python = { 'ruff' },
             }
             vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
                 group = vim.api.nvim_create_augroup('lint', { clear = true }),
@@ -698,7 +702,8 @@ return {
                     json = { 'prettierd' },
                     markdown = { 'prettierd' },
                     html = { 'prettierd' },
-                    yaml = { 'prettierd' }
+                    yaml = { 'prettierd' },
+                    python = { 'ruff_format' },
                 },
                 -- format_on_save = {
                 --
