@@ -92,6 +92,32 @@ vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", opts)
 vim.keymap.set("n", "<leader>do", "<cmd>DiffviewOpen<CR>", { desc = "Open Diffview" })
 vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<CR>", { desc = "Close Diffview" })
 vim.keymap.set("n", "<leader>dh", "<cmd>DiffviewFileHistory<CR>", { desc = "File History" })
+local _float_preview_win = nil
+vim.keymap.set("n", "<leader>dp", function()
+    Snacks.picker.files({
+        confirm = function(picker, item)
+            picker:close()
+            if item then
+                if _float_preview_win then
+                    _float_preview_win:close()
+                end
+                _float_preview_win = Snacks.win({
+                    file = item.file,
+                    width = 0.8,
+                    height = 0.8,
+                    border = "rounded",
+                    bo = {
+                        modifiable = true,
+                    },
+                    wo = {
+                        number = true,
+                        wrap = false,
+                    },
+                })
+            end
+        end,
+    })
+end, { desc = "Preview file in float" })
 
 vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-w>h]])
 vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>j]])
