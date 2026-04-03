@@ -91,7 +91,12 @@ vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", opts)
 
 vim.keymap.set("n", "<leader>do", "<cmd>DiffviewOpen<CR>", { desc = "Open Diffview" })
 vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<CR>", { desc = "Close Diffview" })
-vim.keymap.set("n", "<leader>dh", "<cmd>DiffviewFileHistory<CR>", { desc = "File History" })
+vim.keymap.set("n", "<leader>dh", "<cmd>DiffviewFileHistory %<CR>", { desc = "File History" })
+vim.keymap.set("n", "<leader>dl", function()
+    local line = vim.fn.line(".")
+    vim.cmd("DiffviewFileHistory -range=" .. line .. "," .. line .. " %")
+end, { desc = "Line History (Diffview)" })
+vim.keymap.set("v", "<leader>dl", ":DiffviewFileHistory<CR>", { desc = "Selection History (Diffview)" })
 local _float_preview_win = nil
 vim.keymap.set("n", "<leader>dp", function()
     Snacks.picker.files({
