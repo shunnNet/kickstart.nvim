@@ -119,6 +119,31 @@ vim.keymap.set("n", "<leader>dp", function()
     })
 end, { desc = "Preview file in float" })
 
+vim.keymap.set('n', '<leader>wr', function()
+    vim.notify("Resize mode: h/j/k/l, q to quit", vim.log.levels.INFO)
+    while true do
+        local ok, key = pcall(vim.fn.getcharstr)
+        if not ok or key == 'q' or key == '\27' then break end
+        local cur = vim.api.nvim_get_current_win()
+        if key == 'h' or key == 'l' then
+            vim.cmd('wincmd l')
+            local at_right = vim.api.nvim_get_current_win() == cur
+            if not at_right then vim.api.nvim_set_current_win(cur) end
+            local grow = (key == 'l') ~= at_right
+            vim.cmd('vertical resize ' .. (grow and '+' or '-') .. '2')
+            vim.cmd('redraw')
+        elseif key == 'j' or key == 'k' then
+            vim.cmd('wincmd j')
+            local at_bottom = vim.api.nvim_get_current_win() == cur
+            if not at_bottom then vim.api.nvim_set_current_win(cur) end
+            local grow = (key == 'j') ~= at_bottom
+            vim.cmd('resize ' .. (grow and '+' or '-') .. '2')
+            vim.cmd('redraw')
+        end
+    end
+    vim.notify("Resize mode off", vim.log.levels.INFO)
+end, { desc = "Window resize mode" })
+
 vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-w>h]])
 vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>j]])
 vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>k]])
