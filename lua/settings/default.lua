@@ -62,7 +62,8 @@ return {
                 json = { 'prettier' },
                 markdown = { 'prettier' },
                 html = { 'prettier' },
-                yaml = { 'prettier' }
+                yaml = { 'prettier' },
+                python = { 'ruff_format' },
             },
             format_on_save = {
                 lsp_fallback = true,
@@ -362,7 +363,14 @@ return {
     {
         'sindrets/diffview.nvim',
         config = function()
-            require('diffview').setup {}
+            local actions = require('diffview.actions')
+            require('diffview').setup {
+                keymaps = {
+                    file_history_panel = {
+                        { "n", "<C-d>", actions.open_in_diffview, { desc = "Open commit in Diffview" } },
+                    },
+                },
+            }
         end
     },
     {
@@ -775,6 +783,7 @@ return {
                     'javascript',
                     'typescript',
                     'vue',
+                    'python',
                 },
                 highlight = {
                     enable = true,

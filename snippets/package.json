@@ -235,6 +235,7 @@
                     "pug",
                     "eruby",
                     "javascriptreact",
+                    "typescriptreact",
                     "htmldjango",
                     "astro",
                     "blade"
