@@ -146,7 +146,9 @@ return {
                 -- },
                 sources = {
                     explorer = {
-                        include = { ".claude", ".github", ".local", ".worktree" },
+                        hidden = true,
+                        ignored = true,
+                        exclude = { ".DS_Store", ".git", "node_modules" },
                         layout = { preset = "default" },
                         auto_close = true,
                         jump = { close = true },
