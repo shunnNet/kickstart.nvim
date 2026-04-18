@@ -406,6 +406,24 @@ return {
         dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             require("barbar").setup {}
+
+            local function apply_current_tab_hl()
+                local bg = "#d19a66"
+                local fg = "#282c34"
+                vim.api.nvim_set_hl(0, "BufferCurrent",      { fg = fg, bg = bg, bold = true })
+                vim.api.nvim_set_hl(0, "BufferCurrentIndex", { fg = fg, bg = bg, bold = true })
+                vim.api.nvim_set_hl(0, "BufferCurrentMod",   { fg = "#e06c75", bg = bg, bold = true })
+                vim.api.nvim_set_hl(0, "BufferCurrentSign",  { fg = fg, bg = bg })
+                vim.api.nvim_set_hl(0, "BufferCurrentTarget",{ fg = "#be5046", bg = bg, bold = true })
+                vim.api.nvim_set_hl(0, "BufferCurrentIcon",  { bg = bg })
+                vim.api.nvim_set_hl(0, "BufferCurrentNumber",{ fg = fg, bg = bg, bold = true })
+            end
+
+            apply_current_tab_hl()
+            vim.api.nvim_create_autocmd("ColorScheme", {
+                pattern = "*",
+                callback = apply_current_tab_hl,
+            })
         end
     },
 
