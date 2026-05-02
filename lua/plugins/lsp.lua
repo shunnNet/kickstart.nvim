@@ -131,7 +131,45 @@ vim.lsp.config('jsonls', {
     }
 })
 
+local function find_venv(root)
+    local candidates = { root .. '/.venv', root .. '/venv', root .. '/env' }
+    if vim.env.VIRTUAL_ENV then
+        table.insert(candidates, 1, vim.env.VIRTUAL_ENV)
+    end
+    for _, venv in ipairs(candidates) do
+        if vim.fn.executable(venv .. '/bin/python') == 1 then
+            return venv
+        end
+    end
+    return nil
+end
+
 vim.lsp.config('pyright', {})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if not client or client.name ~= 'pyright' then return end
+        local root = client.config.root_dir or vim.fn.getcwd()
+        local venv = find_venv(root)
+        if not venv then
+            vim.notify('[pyright] no venv under ' .. root, vim.log.levels.WARN)
+            return
+        end
+        local py = venv .. '/bin/python'
+        local venv_settings = {
+            pythonPath = py,
+            venvPath = vim.fn.fnamemodify(venv, ':h'),
+            venv = vim.fn.fnamemodify(venv, ':t'),
+        }
+        client.settings = vim.tbl_deep_extend('force', client.settings or {}, {
+            python = venv_settings,
+            pyright = venv_settings,
+        })
+        client.notify('workspace/didChangeConfiguration', { settings = client.settings })
+        vim.notify('[pyright] using venv: ' .. venv, vim.log.levels.INFO)
+    end,
+})
 
 -- tailwindcss-language-server install is required
 vim.lsp.enable({
