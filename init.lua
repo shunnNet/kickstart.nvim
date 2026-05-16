@@ -14,5 +14,3 @@ if vim.g.vscode then
 else
     require('lazy').setup(require('settings.default'))
 end
-
-require('lsnip')

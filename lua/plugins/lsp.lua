@@ -441,6 +441,8 @@ return {
                             },
                         },
                     })
+
+                    require('lsnip')
                 end
             },
             'saadparwaiz1/cmp_luasnip',
