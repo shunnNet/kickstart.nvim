@@ -148,7 +148,7 @@ return {
                     explorer = {
                         hidden = true,
                         ignored = true,
-                        exclude = { ".DS_Store", ".git", "node_modules" },
+                        exclude = { ".DS_Store", ".git" },
                         layout = { preset = "default" },
                         auto_close = true,
                         jump = { close = true },
