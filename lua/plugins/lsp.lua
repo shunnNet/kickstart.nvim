@@ -171,11 +171,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
--- tailwindcss-language-server install is required
-vim.lsp.enable({
-    'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls', 'jsonls', 'marksman', 'pyright'
-})
---
 local function showClientsAttachedBuffers()
     for _, client in pairs(vim.lsp.get_active_clients()) do
         print('Client: ', client.name)
@@ -195,10 +190,15 @@ vim.api.nvim_create_user_command(
 return {
     {
         'neovim/nvim-lspconfig',
+        lazy = false,
         config = function()
             local lspconfig = require('lspconfig')
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             local base_on_attach = vim.lsp.config.eslint.on_attach
+            -- tailwindcss-language-server install is required
+            vim.lsp.enable({
+                'vue_ls', 'ts_ls', 'eslint', 'tailwindcss', 'yamlls', 'jsonls', 'marksman', 'pyright'
+            })
             -- lspconfig.eslint.setup({
             --     cmd = { 'vscode-eslint-language-server', '--stdio' },
             --     settings = {
