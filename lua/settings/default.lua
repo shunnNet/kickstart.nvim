@@ -204,6 +204,12 @@ return {
             { "<leader>:",  function() Snacks.picker.command_history() end,          desc = "Command History" },
             -- { "<leader>n",       function() Snacks.picker.notifications() end,                           desc = "Notification History" },
             { "<leader>e",  function() Snacks.explorer() end,                        desc = "File Explorer" },
+            { "<leader>E",  function() Snacks.explorer({
+                layout = { preset = "sidebar", preview = false },
+                auto_close = false,
+                enter = false,
+                jump = { close = false },
+            }) end, desc = "File Explorer (Sidebar)" },
             -- -- find
             { "<leader>fb", function() Snacks.picker.buffers() end,                  desc = "Buffers" },
             { "<leader>fg", function() Snacks.picker.grep() end,                     desc = "Grep" },
