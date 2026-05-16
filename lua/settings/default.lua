@@ -796,26 +796,26 @@ return {
     -- },
     {
         'nvim-treesitter/nvim-treesitter',
+        branch = 'main',
+        lazy = false,
         build = ':TSUpdate',
         config = function()
-            require('nvim-treesitter.configs').setup({
-                ensure_installed = {
-                    'markdown',
-                    'markdown_inline',
-                    'html',
-                    'lua',
-                    'vim',
-                    'vimdoc',
-                    'javascript',
-                    'typescript',
-                    'vue',
-                    'python',
+            require('nvim-treesitter').install({
+                'markdown', 'markdown_inline', 'html', 'lua', 'vim',
+                'vimdoc', 'javascript', 'typescript', 'vue', 'python',
+            })
+
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = {
+                    'markdown', 'html', 'lua', 'vim', 'help',
+                    'javascript', 'javascriptreact',
+                    'typescript', 'typescriptreact',
+                    'vue', 'python',
                 },
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = { 'markdown' }
-                },
-                indent = { enable = true },
+                callback = function()
+                    pcall(vim.treesitter.start)
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end,
             })
         end
     },
