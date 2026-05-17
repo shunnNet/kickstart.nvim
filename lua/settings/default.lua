@@ -812,9 +812,18 @@ return {
                     'typescript', 'typescriptreact',
                     'vue', 'python',
                 },
-                callback = function()
+                callback = function(args)
                     pcall(vim.treesitter.start)
                     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    -- 對 markdown 額外疊上 regex syntax，補回 TS 沒涵蓋的視覺
+                    -- （等同舊版 additional_vim_regex_highlighting = { 'markdown' }）
+                    if args.match == 'markdown' then
+                        vim.schedule(function()
+                            if vim.api.nvim_buf_is_valid(args.buf) then
+                                vim.bo[args.buf].syntax = 'markdown'
+                            end
+                        end)
+                    end
                 end,
             })
         end
