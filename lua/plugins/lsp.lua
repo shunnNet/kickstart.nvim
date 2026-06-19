@@ -649,6 +649,10 @@ return {
     -- },
     {
         'williamboman/mason.nvim',
+        -- VeryLazy：UI 畫完後才載入。Mason 是低頻操作（裝/更新 LSP server），
+        -- 不需擋在啟動關鍵路徑上，這裡省下開機時拉 registry 的成本。
+        event = 'VeryLazy',
+        cmd = { 'Mason', 'MasonInstall', 'MasonUpdate', 'MasonLog', 'MasonUninstall' },
         config = function()
             require('mason').setup()
         end
@@ -656,6 +660,8 @@ return {
     {
         -- default install directory is: ~/.local/share/nvim/mason
         'williamboman/mason-lspconfig.nvim',
+        -- 同上移出啟動路徑；ensure_installed 仍會在 VeryLazy 時執行，行為不變
+        event = 'VeryLazy',
         dependencies = { 'neovim/nvim-lspconfig', 'williamboman/mason.nvim' },
         config = function()
             require('mason-lspconfig').setup({
