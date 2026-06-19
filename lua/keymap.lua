@@ -157,7 +157,6 @@ vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-w>l]])
 
 vim.keymap.set({ 'n' }, '<leader>tf', ':ToggleTerm direction=float<CR>')
 vim.keymap.set({ 'n' }, '<leader>th', ':ToggleTerm direction=vertical<CR>')
-vim.keymap.set({ 'n' }, '<leader>lg', ':ToggleTerm direction=vertical<CR> cmd=lg')
 
 vim.keymap.set({ 'n' }, '<leader>ww', ':wa<CR>', { desc = "Save all buffer", silent = true })
 
