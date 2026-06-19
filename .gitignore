@@ -5,3 +5,6 @@ nvim
 
 spell/
 lazy-lock.json
+
+# macOS 系統檔（各層目錄都可能出現）
+.DS_Store
