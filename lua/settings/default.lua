@@ -669,10 +669,6 @@ return {
         end,
     },
     {
-        'tpope/vim-fugitive',
-        cmd = { 'Git', 'G' }
-    },
-    {
         'kylechui/nvim-surround',
         version = "*",
         event = "VeryLazy",
