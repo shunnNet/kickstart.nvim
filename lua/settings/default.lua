@@ -608,7 +608,21 @@ return {
             { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
 
         },
-        event = 'VimEnter',
+        -- 改成 lazy load：只在用到 telescope 時才載入，移出啟動關鍵路徑。
+        -- 觸發來源：(1) :Telescope 指令（含 yanky 的 :Telescope yank_history）
+        --          (2) 下方 keys 的 <leader>so
+        --          (3) lsp.lua 內 gr/gI/<leader>D/ds/ws 等 require('telescope.builtin')，
+        --              lazy.nvim 會攔截 require 自動載入
+        cmd = 'Telescope',
+        keys = {
+            {
+                '<leader>so',
+                function()
+                    require('telescope.builtin').oldfiles({ cwd_only = true })
+                end,
+                desc = '[F]ind [R]ecent files',
+            },
+        },
 
         config = function()
             require('telescope').setup({
@@ -636,16 +650,9 @@ return {
             pcall(require('telescope').load_extension, 'fzf')
 
             -- See `:help telescope.builtin`
-            local builtin = require 'telescope.builtin'
+            -- <leader>so（oldfiles）已移到上方 keys 區塊以支援 lazy load
             -- vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
             -- vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-
-            -- Lua mapping example (init.lua or keymaps file)
-            vim.keymap.set("n", "<leader>so", function()
-                builtin.oldfiles({
-                    cwd_only = true
-                })
-            end, { desc = "[F]ind [R]ecent files" })
 
             -- vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
             -- vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
@@ -711,15 +718,14 @@ return {
     },
     {
         'ahmedkhalf/project.nvim',
-        dependencies = {
-            'nvim-telescope/telescope.nvim'
-        },
+        -- 不再依賴 telescope：<leader>fp 已改用 Snacks.picker.projects，
+        -- 原本的 require('telescope').load_extension('projects') 是死碼，
+        -- 卻會連帶把 telescope 在啟動時強制載入，故一併移除。
         config = function()
             require('project_nvim').setup({
                 silent_chdir = true,
                 patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile" },
             })
-            require('telescope').load_extension('projects')
         end
     },
     {
