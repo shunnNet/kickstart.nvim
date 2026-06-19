@@ -391,6 +391,14 @@ return {
 
     {
         'numToStr/Comment.nvim',
+        -- lazy load：只在用註解操作鍵時才載入。Comment 的 gcc/gc/gb 等
+        -- mapping 由 setup() 建立，lazy 命中下列 keys 會先載入再 replay 按鍵。
+        keys = {
+            { 'gcc', mode = 'n',                desc = 'Comment toggle current line' },
+            { 'gbc', mode = 'n',                desc = 'Comment toggle current block' },
+            { 'gc',  mode = { 'n', 'o', 'x' },  desc = 'Comment toggle linewise' },
+            { 'gb',  mode = { 'n', 'o', 'x' },  desc = 'Comment toggle blockwise' },
+        },
         config = function()
             require('Comment').setup({
                 auto_hide = true,
@@ -803,6 +811,9 @@ return {
     -- },
     {
         "gbprod/yanky.nvim",
+        -- VeryLazy：yank 歷史靠 setup() 註冊的 TextYankPost autocmd 擷取，
+        -- VeryLazy 在 UI 畫完後、你實際複製前就會載入，功能不變卻不擋啟動。
+        event = "VeryLazy",
         opts = {
             history_length = 10
             -- your configuration comes here
@@ -813,6 +824,8 @@ return {
     {
         "3rd/image.nvim",
         build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
+        -- lazy load：只在開 markdown 檔時才載入（圖片渲染只用在 markdown）。
+        ft = { "markdown" },
         opts = {
             processor = "magick_cli",
             integrations = {
