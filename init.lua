@@ -1,3 +1,7 @@
+-- 關閉內建 netrw（改用 snacks explorer），省下啟動時 sourcing netrwPlugin.vim 的成本
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 require('keymap')
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
