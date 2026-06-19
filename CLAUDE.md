@@ -61,7 +61,6 @@ LSP 設定位於 `lua/plugins/lsp.lua`：
 - **Git**: diffview.nvim、gitsigns.nvim、vim-fugitive、lazygit（透過 toggleterm）
 - **格式化**: conform.nvim（prettierd）
 - **LSP 增強**: lspsaga.nvim
-- **AI**: claudecode.nvim
 
 ## 按鍵慣例
 
@@ -71,7 +70,6 @@ LSP 設定位於 `lua/plugins/lsp.lua`：
 - `<leader>b*`：Buffer 操作
 - `<leader>d*`：Diffview
 - `<leader>t*`：Terminal / Tab
-- `<leader>a*`：AI / Claude Code
 - `<leader>l*`：Lazygit
 - `gd`, `gr`, `gI`, `gD`：LSP 導航
 - `gd` 使用自訂實作（非 telescope）：收集所有 LSP clients 結果，單一結果直接跳，多結果用 telescope 顯示
