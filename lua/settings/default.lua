@@ -382,8 +382,9 @@ return {
         end
     },
     {
-        'DaikyXendo/nvim-material-icon',
-        dependencies = 'nvim-tree/nvim-web-devicons',
+        -- 原本掛 DaikyXendo/nvim-material-icon，但 config 其實只 setup 了 devicons，
+        -- material-icon 本體沒被用到，故直接收斂成 nvim-web-devicons 一個套件。
+        'nvim-tree/nvim-web-devicons',
         config = function()
             require('nvim-web-devicons').setup({
                 -- your personnal icons can go here (to override)
