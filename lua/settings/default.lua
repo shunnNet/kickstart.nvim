@@ -319,6 +319,12 @@ return {
     },
     {
         'sindrets/diffview.nvim',
+        -- lazy load：只在用到 diffview 指令時才載入。觸發來源是 keymap.lua 的
+        -- <leader>d* 全部都是 <cmd>Diffview...<CR>，命中下列 cmd 即會載入。
+        cmd = {
+            'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFocusFiles',
+            'DiffviewRefresh', 'DiffviewFileHistory', 'DiffviewLog',
+        },
         config = function()
             local actions = require('diffview.actions')
             require('diffview').setup {
