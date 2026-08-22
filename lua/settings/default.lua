@@ -820,8 +820,17 @@ return {
     {
         "3rd/image.nvim",
         build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
-        -- lazy load：只在開 markdown 檔時才載入（圖片渲染只用在 markdown）。
+        -- lazy load：markdown 檔（行內圖片渲染）。
         ft = { "markdown" },
+        -- 直接開圖檔時，nvim 不會給它 filetype，上面的 ft 不會命中，
+        -- image.nvim 的 hijack_file_patterns（把 buffer 換成圖片）就沒機會生效，
+        -- 只會看到一堆 binary 亂碼。所以另外用副檔名 pattern 在讀檔前載入。
+        event = {
+            {
+                event = { "BufReadPre", "BufNewFile" },
+                pattern = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" },
+            },
+        },
         opts = {
             processor = "magick_cli",
             integrations = {
