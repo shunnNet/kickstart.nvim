@@ -833,6 +833,19 @@ return {
         },
         opts = {
             processor = "magick_cli",
+            -- 圖片是終端機直接貼在螢幕上的（kitty graphics protocol 經 tmux passthrough），
+            -- 不屬於任何 tmux window，所以切到別的 window 時圖片會留在原地不消失。
+            -- 開這個選項，image.nvim 才會註冊 FocusLost/FocusGained：
+            -- 切走時清圖、切回來重畫。
+            tmux_show_only_in_active_window = true,
+            -- 上面那個選項的清圖條件是「tmux window id 變了」，
+            -- 所以在同一個 window 內切 pane 時不會清圖。
+            -- 但切 pane（尤其從 zoom/maximize 跳出來）會觸發 resize，
+            -- image.nvim 的 WinResized handler 會把圖重畫一次，
+            -- 結果就是圖留在畫面上、看起來跑到隔壁 pane 去了。
+            -- 這個選項讓 FocusLost 無條件清圖，連切 pane 也涵蓋。
+            -- 代價：離開圖片所在的 pane，圖就消失，切回來才重畫。
+            editor_only_render_when_focused = true,
             integrations = {
                 -- html = {
                 --    enabled = true
