@@ -190,7 +190,7 @@ vim.keymap.set('n', '<leader>xp', function()
 end, { desc = "Format buffer (conform)" })
 
 -- Markdown
-vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreview<cr>', { desc = "Markdown Preview" })
-vim.keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<cr>', { desc = "Markdown Preview Stop" })
+vim.keymap.set('n', '<leader>mp', '<cmd>LivePreview start<cr>', { desc = "Markdown Preview" })
+vim.keymap.set('n', '<leader>ms', '<cmd>LivePreview close<cr>', { desc = "Markdown Preview Stop" })
 vim.keymap.set('n', '<leader>mt', '<cmd>Markview toggle<cr>', { desc = "Toggle Markview" })
 vim.keymap.set('n', '<leader>mh', '<cmd>Markview hybridToggle<cr>', { desc = "Toggle Markview Hybrid Mode" })

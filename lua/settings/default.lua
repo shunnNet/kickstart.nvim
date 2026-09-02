@@ -730,14 +730,53 @@ return {
     --     ---@type render.md.UserConfig
     --     opts = {},
     -- },
+
+    -- ↓↓↓ 以下這段 iamcco/markdown-preview.nvim 已停用（2026-09-01）↓↓↓
+    -- 停用理由：upstream 最後一次更新是 2024-07，
+    -- 內建的 mermaid.js 鎖死在 10.2 且沒有設定可以換版本，
+    -- mermaid 11 之後的新語法（xychart、block-beta、architecture、
+    -- flowchart 的 `A@{ shape: ... }`）一律 render 失敗。
+    -- 另外它預設 g:mkdp_auto_close = 1，切到別的 buffer 就會把預覽分頁關掉。
+    -- 改用再下面那個 live-preview.nvim。
+    -- {
+    --     "iamcco/markdown-preview.nvim",
+    --     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    --     build = "cd app && npm install",
+    --     init = function()
+    --         vim.g.mkdp_filetypes = { "markdown" }
+    --     end,
+    --     ft = { "markdown" },
+    -- },
     {
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-        build = "cd app && npm install",
-        init = function()
-            vim.g.mkdp_filetypes = { "markdown" }
+        -- 瀏覽器即時預覽 markdown。後端純 Lua，不需要 node / deno。
+        -- 內建 mermaid 11.x，且不會因為切換 buffer 就關掉預覽視窗。
+        "brianhuster/live-preview.nvim",
+        cmd = { "LivePreview" },
+        config = function()
+            -- 多個 nvim 實體同時開預覽時的隔離設定。
+            -- 背景：這個套件預設 port 固定 5500、且偵測到 port 被佔用時
+            -- 只會 notify 警告、不會擋下也不會換 port，兩個實體會同時
+            -- 掛在 5500 上，瀏覽器請求打到誰是不可預期的。
+            -- 做法：用 cwd 算出一個 5500-5599 之間的 port，
+            -- 同一個目錄每次算出來一樣（重開 nvim 可重現），不同目錄幾乎不會撞。
+            local cwd = vim.uv.cwd() or ""
+            local hash = 0
+            for i = 1, #cwd do
+                hash = (hash * 31 + cwd:byte(i)) % 100
+            end
+
+            require("livepreview.config").set({
+                port = 5500 + hash,
+                -- server 的根目錄改成「被預覽檔案所在的目錄」，
+                -- 預設是 nvim 行程的 cwd，跨實體時會拿 A 的 cwd 去找 B 的檔案。
+                -- 副作用：markdown 若引用上層目錄的資源（../assets/x.png）會抓不到。
+                dynamic_root = true,
+                -- 刻意不指定 picker：套件的設定值清單雖然列了 "snacks.picker"，
+                -- 但它的 picker 模組沒有對應實作（實測 picker.snacks == nil），
+                -- 指定下去 :LivePreview pick 會直接報 invalid。
+                -- 留空會走自動偵測，本設定裝了 telescope，會挑 telescope。
+            })
         end,
-        ft = { "markdown" },
     },
     -- {
     --     'OXY2DEV/markview.nvim',
