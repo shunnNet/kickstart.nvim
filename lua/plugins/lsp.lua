@@ -671,6 +671,7 @@ return {
                     'jsonls',
                     'marksman',
                     'pyright',
+                    'vue_ls',
                 },
             })
         end
