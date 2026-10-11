@@ -700,13 +700,14 @@ return {
                 autochdir = true
             }
 
-            local DIR      = "/Users/net.chen/Library/Application Support/lazygit"
+            local HOME     = vim.fn.expand("~")
+            local DIR      = HOME .. "/Library/Application Support/lazygit"
             local Terminal = require('toggleterm.terminal').Terminal
             local lazygit  = Terminal:new({
                 cmd = "lazygit",
                 env = {
                     LG_CONFIG_FILE = DIR ..
-                        "/config.yml,/Users/net.chen/.config/lazygit-catppuccin/themes-mergable/frappe/maroon.yml"
+                        "/config.yml," .. HOME .. "/.config/lazygit-catppuccin/themes-mergable/frappe/maroon.yml"
                 },
                 direction = "float",
                 display_name = "lazygit",
